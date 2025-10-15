@@ -56,17 +56,17 @@ public class LegoSet {
     public void setPieces(int pieces){
         this.pieces = pieces;
     }
-    public double getPrice(){
-        return this.price;
-    }
-    public void setPrice(double price){
-        this.price = price;
-    }
     public ReleaseDate getReleaseDate() {
         return releaseDate;
     }
     public void setReleaseDate(ReleaseDate releaseDate) {
         this.releaseDate = releaseDate;
+    }
+    public double getPrice(){
+        return this.price;
+    }
+    public void setPrice(double price){
+        this.price = price;
     }
 
     /**
