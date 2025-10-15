@@ -16,6 +16,4 @@ public interface Menu {
     LegoSet updateSet();
     double retrieveTotal();
     boolean exit();
-
-
 }
