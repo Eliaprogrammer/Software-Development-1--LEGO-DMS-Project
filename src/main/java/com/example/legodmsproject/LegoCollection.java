@@ -11,10 +11,7 @@ package com.example.legodmsproject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class LegoCollection implements Menu{
     LegoSet legoSet = new LegoSet();
@@ -25,7 +22,7 @@ public class LegoCollection implements Menu{
 
     /**
      * Method: displayLegoMenu
-     * @return: String
+     * return: String
      * Parameter: none
      * Purpose: The user will be capable of interacting
      * with the menu options
@@ -87,7 +84,7 @@ public class LegoCollection implements Menu{
     /**
      * Method: addSetFromFile
      * Parameters: none
-     * @return: boolean
+     * return: boolean
      * Purpose: When called upon the user
      * can enter the location of a file to add to
      * the list
@@ -162,153 +159,198 @@ public class LegoCollection implements Menu{
      * about a lego set to add it to the list.
      */
     public boolean addSetManually() {
-        Scanner input = new Scanner(System.in);
-        try {
-            System.out.println("You are in the process of manually entering data " +
-                    "for adding a LEGO set(s) to the system.");
+        do {
+            Scanner input = new Scanner(System.in);
+            try {
+                System.out.println("You are in the process of manually entering data " +
+                        "for adding a LEGO set(s) to the system.");
 
-            boolean okToContinue = false;
-            int numberOfSets = 0;
-            while (!okToContinue){
-                System.out.println("How many LEGO sets you would like to add at a time?");
-                String userEntry = input.nextLine();
-                try {
-                    numberOfSets = Integer.parseInt(userEntry);
-                    if (numberOfSets < 0) throw new Exception();
-                    okToContinue = true;
-                } catch (Exception e) {
-                    System.out.println("Please enter a number greater than 0....");
+                boolean okToContinue = false;
+                int numberOfSets = 0;
+                while (!okToContinue) {
+                    System.out.println("How many LEGO sets you would like to add at a time?");
+                    String userEntry = input.nextLine();
+                    try {
+                        numberOfSets = Integer.parseInt(userEntry);
+                        if (numberOfSets < 0) throw new Exception();
+                        okToContinue = true;
+                    } catch (Exception e) {
+                        System.out.println("Please enter a number greater than 0....");
+                    }
                 }
-            }
-            for (int setIndex = 0; setIndex < numberOfSets; setIndex++) {
-                while (!isValid) {
+                for (int setIndex = 0; setIndex < numberOfSets; setIndex++) {
+
                     int setNumber = 0;
                     do {
                         try {
-                            System.out.println("Please enter the nth LEGO set (set number)" +
-                                    " you are adding to the system:");
+                            System.out.println("Please enter the nth LEGO set " +
+                                    "(set number) you are adding to the system:");
                             String userSetNumber = input.nextLine();
+
                             setNumber = Integer.parseInt(userSetNumber);
-                            if(setNumber > 0) {
+                            if (setNumber > 0) {
                                 legoSet.setSetNumber(setNumber);
                                 isValid = true;
                             }
-
-                        }catch(InputMismatchException e){
+                        } catch (InputMismatchException e) {
                             System.out.println("You enter the wrong input type");
-                        }
-                        catch (Exception e) {
-                            System.out.println("The input is not a proper set number (whole number).");
-
+                        } catch (Exception e) {
+                            System.out.println("The input is not a proper set number" +
+                                    " (whole number is needed).");
                         }
                     } while (!isValid);
 
 
-                    String userLegoName = "";
+                    String userLegoName;
                     do {
                         try {
                             System.out.println("Please enter the name of the LEGO " +
                                     "set you would like to add: to the system:");
                             userLegoName = input.nextLine().trim();
-                            if(userLegoName.length() < 50){
+
+                            if (userLegoName.matches("[+-]?\\d+(\\.\\d+)?")) {
+                                throw new InputMismatchException();
+                            }
+
+                            if (userLegoName.isBlank()) {
+                                throw new IllegalArgumentException();
+                            } else if (userLegoName.length() <= 50) {
                                 legoSet.setName(userLegoName);
                                 isValid = true;
+                            } else {
+                                throw new Exception();
                             }
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Nothing was detected.");
+                            isValid = false;
                         } catch (InputMismatchException e) {
                             System.out.println("The input must be a word. ");
                             isValid = false;
-
                         } catch (Exception e) {
                             System.out.println("The name must have up to 50 characters.");
                             isValid = false;
-
                         }
                     } while (!isValid);
 
 
-                    String userLegoTheme = "";
+                    String userLegoTheme;
                     do {
                         try {
                             System.out.println("Please enter the theme of the LEGO Set:");
-                            if(userLegoTheme.length() < 50){
-                                userLegoTheme = input.nextLine().trim();
-                                legoSet.setTheme(userLegoTheme);
-                                isValid = true;
+                            userLegoTheme = input.nextLine().trim();
+
+                            if (userLegoTheme.matches("[+-]?\\d+(\\.\\d+)?")) {
+                                throw new InputMismatchException();
                             }
 
+                            if (userLegoTheme.isBlank()) {
+                                throw new IllegalArgumentException();
+                            } else if (userLegoTheme.length() <= 50) {
+                                legoSet.setTheme(userLegoTheme);
+                                isValid = true;
+                            } else {
+                                throw new Exception();
+                            }
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Nothing was detected.");
+                            isValid = false;
                         } catch (InputMismatchException e) {
                             System.out.println("The input must be word");
+                            isValid = false;
                         } catch (Exception e) {
-                            System.out.println("The theme must have up to 50 characters.");
+                            System.out.println("The theme must have up to" +
+                                    " 50 characters.");
+                            isValid = false;
                         }
                     } while (!isValid);
 
 
-                    int numberOfPieces = 0;
+                    int numberOfPieces;
                     do {
                         try {
-                            System.out.println("Please enter the number of Pieces the LEGO Set:");
+                            System.out.println("Please enter the number of Pieces" +
+                                    " the LEGO Set:");
                             String userLegoNumberOfPieces = input.nextLine().trim();
                             numberOfPieces = Integer.parseInt(userLegoNumberOfPieces);
-                            legoSet.setPieces(numberOfPieces);
-                            isValid = true;
+                            if (numberOfPieces > 0) {
+                                legoSet.setPieces(numberOfPieces);
+                                isValid = true;
+                            } else {
+                                throw new Exception();
+                            }
                         } catch (Exception e) {
                             System.out.println("It must be a whole number.");
+                            isValid = false;
                         }
                     } while (!isValid);
 
 
                     do {
-                        System.out.println(("Please enter the date the LEGO set was " +
-                                "release: MM/DD/YYYY"));
+                        System.out.println(("Please enter the date the LEGO set" +
+                                " was release: MM/DD/YYYY"));
                         try {
                             String userReleaseDate = input.nextLine().trim();
                             String[] dateParts = userReleaseDate.split("/");
                             int month = Integer.parseInt(dateParts[0]);
                             int day = Integer.parseInt(dateParts[1]);
                             int year = Integer.parseInt(dateParts[2]);
-                            ReleaseDate releaseDate = new ReleaseDate(month, day, year);
-                            legoSet.setReleaseDate(releaseDate);
-                            isValid = true;
+                            if ((month >= 1 && month <= 12) &&
+                                    (day >= 1 && day <= 31)
+                                    && (year >= 1700 && year <= 2025)) {
+                                ReleaseDate releaseDate = new ReleaseDate(month, day, year);
+                                legoSet.setReleaseDate(releaseDate);
+                                isValid = true;
+                            } else {
+                                throw new Exception();
+                            }
                         } catch (Exception e) {
-                            System.out.println("The system does not recognize the date format." +
+                            System.out.println("The system does not recognize the date format. " +
                                     "Please re-enter");
+                            isValid = false;
                         }
                     } while (!isValid);
 
-                    double legoPrice = 0;
+                    double legoPrice;
                     do {
                         try {
-                            System.out.println("Please enter the price of the LEGO Set:");
-
+                            System.out.println("Please enter the price of" +
+                                    " the LEGO Set (exclude the $)");
                             String userLegoPrice = input.nextLine().trim();
                             legoPrice = Double.parseDouble(userLegoPrice);
-                            legoSet.setPrice(legoPrice);
-                            isValid = true;
+
+                            if (legoPrice > 0.0) {
+                                legoSet.setPrice(legoPrice);
+                                isValid = true;
+                            } else {
+                                throw new Exception();
+                            }
                         } catch (Exception e) {
                             System.out.println("The input you have enter is not compatible.");
+                            isValid = false;
                         }
+
                     } while (!isValid);
 
+                    LegoSet lego = new LegoSet(legoSet.getSetNumber(), legoSet.getName(),
+                            legoSet.getTheme(), legoSet.getPieces(),
+                            legoSet.getReleaseDate(), legoSet.getPrice());
+                    legoSets.add(lego);
+                    System.out.println(lego);
+                    System.out.println();
                 }
-                LegoSet lego = new LegoSet(legoSet.getSetNumber(), legoSet.getName(),
-                        legoSet.getTheme(),legoSet.getPieces(),
-                        legoSet.getReleaseDate(), legoSet.getPrice());
-                legoSets.add(lego);
 
-                displaySet();
-                displayLegoMenu();
-                return true;
+            } catch (InputMismatchException e) {
+                System.out.println("You have inputted the wrong value. Please try again.");
+                addSetManually();
+            } catch (Exception e) {
+                System.out.println("The system did not recognize something");
             }
-        }
-        catch(InputMismatchException e) {
-            System.out.println("You have inputted the wrong value. Please try again.");
-            addSetManually();
-        }
-        catch(Exception e){
-            System.out.println("The system did not recognize something");
-        }
-        return false;
+        }while(!isValid);
+        System.out.println("Here are all the LEGO sets that are " +
+                "currently in the list. ");
+        displaySet();
+        displayLegoMenu();
+        return true;
     }
 
     /**
@@ -329,7 +371,7 @@ public class LegoCollection implements Menu{
                 for (LegoSet lego : legoSets) {
                     if(lego.getName().equalsIgnoreCase(userChoice)){
                         System.out.println("You are removing " +
-                                userChoice + "from the list " +
+                                userChoice + " from the list " +
                                 "of LEGO sets");
                         legoSets.remove(lego);
                         isValid = true;
@@ -382,7 +424,7 @@ public class LegoCollection implements Menu{
         boolean shouldContinue = false;
         do {
 
-            String userInputUpdate = "";
+            String userInputUpdate;
             do {
                 System.out.println("Choose what Lego attribute would you like to update?");
                 System.out.println("Set Number, Lego Name, Lego Theme, Lego Pieces, Lego " +
@@ -633,7 +675,7 @@ public class LegoCollection implements Menu{
         if(exit.equalsIgnoreCase("No")){
             System.out.println("You will be redirected to the LEGO menu option");
             displayLegoMenu();
-            return true;
+
 
         }
         if(exit.equalsIgnoreCase("Yes")){
@@ -642,8 +684,9 @@ public class LegoCollection implements Menu{
             System.out.println();
             System.out.println("You are now exiting the program");
             System.out.println("Program ended!");
-            return true;
+            return false;
+
         }
-        return false;
+        return true;
     }
 }
