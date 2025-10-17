@@ -1,5 +1,7 @@
 package com.example.legodmsproject;
 
+import java.util.Scanner;
+
 /**
  * Elia Schwartz
  * October 10, 2025,
@@ -9,7 +11,7 @@ package com.example.legodmsproject;
  */
 public interface Menu {
     String displayLegoMenu();
-    boolean addSetFromFile();
+    boolean addSetFromFile(Scanner input);
     boolean addSetManually();
     LegoSet removeSet();
     LegoSet displaySet();
