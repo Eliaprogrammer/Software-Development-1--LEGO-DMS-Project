@@ -20,6 +20,7 @@ public class LegoCollection implements Menu{
 
     boolean isValid = false;
 
+
     /**
      * Method: displayLegoMenu
      * return: String
@@ -46,7 +47,8 @@ public class LegoCollection implements Menu{
 
             switch (menuOption) {
                 case "1":
-                    addSetFromFile();
+                    Scanner input = new Scanner(System.in);
+                    addSetFromFile(input);
                     isValid = true;
                     break;
                 case"2":
@@ -89,22 +91,30 @@ public class LegoCollection implements Menu{
      * can enter the location of a file to add to
      * the list
      */
-    public boolean addSetFromFile() {
-        Scanner input = new Scanner(System.in);
+    public boolean addSetFromFile(Scanner input) {
+
         System.out.println("You are in the process of adding LEGO set(s) from a " +
                 "file to the system.");
-        do {
             try {
                 System.out.println("Please enter your file location/path:");
+//                File file = new File("C:\\Users\\Owner\\OneDrive\\Desktop\\LEGO Collection List.txt");
+//                Scanner fileReader = new Scanner(file);
                 String fileLocation = input.nextLine();
                 File file = new File(fileLocation);
                 Scanner fileReader = new Scanner(file);
+
                 System.out.println();
+
+                if (!(file.exists())) {
+                    throw new IOException();
+                }
                 System.out.println("The File was successfully uploaded. You can now " +
                         "see the file details.");
+
                 while (fileReader.hasNextLine()) {
                     String setString = fileReader.nextLine().trim();
                     if (setString.isEmpty()) continue;
+
                     String[] legoSetArrayParts = setString.split("\\|");
                     int setNumber = Integer.parseInt(legoSetArrayParts[0]);
                     String name = legoSetArrayParts[1];
@@ -128,32 +138,29 @@ public class LegoCollection implements Menu{
                     System.out.println(legoSet);
 
                 }
-                isValid = true;
-                System.out.println();
 
-                while (!(file.exists())) {
-                    throw new IOException();
-                }
+                fileReader.close();
+                System.out.println();
                 displayLegoMenu();
                 return true;
 
             } catch (IOException e) {
                 System.out.println("System was unable to location the file you " +
                         "are trying to upload.");
-                addSetFromFile();
+                System.out.println();
+                addSetFromFile(input);
+                return false;
             } catch (Exception e) {
                 System.out.println("An error has occurred.");
             }
-            break;
-        }while(!isValid);
 
         return false;
     }
 
     /**
      * Method: addSetManually
-     * @param: none
-     * @return: boolean
+     * param: none
+     * return: boolean
      * Purpose: When called upon the user
      * can manually enter information details
      * about a lego set to add it to the list.
@@ -170,19 +177,22 @@ public class LegoCollection implements Menu{
                 while (!okToContinue) {
                     System.out.println("How many LEGO sets you would like to add at a time?");
                     String userEntry = input.nextLine();
+
                     try {
                         numberOfSets = Integer.parseInt(userEntry);
                         if (numberOfSets < 0) throw new Exception();
                         okToContinue = true;
+
                     } catch (Exception e) {
                         System.out.println("Please enter a number greater than 0....");
                     }
                 }
                 for (int setIndex = 0; setIndex < numberOfSets; setIndex++) {
+                    int setNumber;
 
-                    int setNumber = 0;
                     do {
                         try {
+
                             System.out.println("Please enter the nth LEGO set " +
                                     "(set number) you are adding to the system:");
                             String userSetNumber = input.nextLine();
@@ -192,18 +202,21 @@ public class LegoCollection implements Menu{
                                 legoSet.setSetNumber(setNumber);
                                 isValid = true;
                             }
+
                         } catch (InputMismatchException e) {
                             System.out.println("You enter the wrong input type");
                         } catch (Exception e) {
                             System.out.println("The input is not a proper set number" +
                                     " (whole number is needed).");
                         }
+
                     } while (!isValid);
 
 
                     String userLegoName;
                     do {
                         try {
+
                             System.out.println("Please enter the name of the LEGO " +
                                     "set you would like to add: to the system:");
                             userLegoName = input.nextLine().trim();
@@ -220,6 +233,7 @@ public class LegoCollection implements Menu{
                             } else {
                                 throw new Exception();
                             }
+
                         } catch (IllegalArgumentException e) {
                             System.out.println("Nothing was detected.");
                             isValid = false;
@@ -230,12 +244,14 @@ public class LegoCollection implements Menu{
                             System.out.println("The name must have up to 50 characters.");
                             isValid = false;
                         }
+
                     } while (!isValid);
 
 
                     String userLegoTheme;
                     do {
                         try {
+
                             System.out.println("Please enter the theme of the LEGO Set:");
                             userLegoTheme = input.nextLine().trim();
 
@@ -251,6 +267,7 @@ public class LegoCollection implements Menu{
                             } else {
                                 throw new Exception();
                             }
+
                         } catch (IllegalArgumentException e) {
                             System.out.println("Nothing was detected.");
                             isValid = false;
@@ -262,26 +279,31 @@ public class LegoCollection implements Menu{
                                     " 50 characters.");
                             isValid = false;
                         }
+
                     } while (!isValid);
 
 
                     int numberOfPieces;
                     do {
                         try {
+
                             System.out.println("Please enter the number of Pieces" +
                                     " the LEGO Set:");
                             String userLegoNumberOfPieces = input.nextLine().trim();
                             numberOfPieces = Integer.parseInt(userLegoNumberOfPieces);
+
                             if (numberOfPieces > 0) {
                                 legoSet.setPieces(numberOfPieces);
                                 isValid = true;
                             } else {
                                 throw new Exception();
                             }
+
                         } catch (Exception e) {
                             System.out.println("It must be a whole number.");
                             isValid = false;
                         }
+
                     } while (!isValid);
 
 
@@ -294,6 +316,7 @@ public class LegoCollection implements Menu{
                             int month = Integer.parseInt(dateParts[0]);
                             int day = Integer.parseInt(dateParts[1]);
                             int year = Integer.parseInt(dateParts[2]);
+
                             if ((month >= 1 && month <= 12) &&
                                     (day >= 1 && day <= 31)
                                     && (year >= 1700 && year <= 2025)) {
@@ -303,16 +326,19 @@ public class LegoCollection implements Menu{
                             } else {
                                 throw new Exception();
                             }
+
                         } catch (Exception e) {
                             System.out.println("The system does not recognize the date format. " +
                                     "Please re-enter");
                             isValid = false;
                         }
+
                     } while (!isValid);
 
                     double legoPrice;
                     do {
                         try {
+
                             System.out.println("Please enter the price of" +
                                     " the LEGO Set (exclude the $)");
                             String userLegoPrice = input.nextLine().trim();
@@ -324,6 +350,7 @@ public class LegoCollection implements Menu{
                             } else {
                                 throw new Exception();
                             }
+
                         } catch (Exception e) {
                             System.out.println("The input you have enter is not compatible.");
                             isValid = false;
@@ -345,7 +372,9 @@ public class LegoCollection implements Menu{
             } catch (Exception e) {
                 System.out.println("The system did not recognize something");
             }
+
         }while(!isValid);
+
         System.out.println("Here are all the LEGO sets that are " +
                 "currently in the list. ");
         displaySet();
@@ -364,10 +393,12 @@ public class LegoCollection implements Menu{
     public LegoSet removeSet(){
         do {
             try{
+
             System.out.println("Please enter the LEGO set name you wish to remove and " +
                     "everything associated with it: ");
                 Scanner remove = new Scanner(System.in);
                 String userChoice = remove.nextLine();
+
                 for (LegoSet lego : legoSets) {
                     if(lego.getName().equalsIgnoreCase(userChoice)){
                         System.out.println("You are removing " +
@@ -376,10 +407,9 @@ public class LegoCollection implements Menu{
                         legoSets.remove(lego);
                         isValid = true;
                         break;
-
                     }
-
                 }
+
             }catch (Exception e){
                 System.out.println("System can not remove the LEGO set");
                 System.out.println("The wrong data value was entered. Please try again. ");
@@ -390,7 +420,6 @@ public class LegoCollection implements Menu{
 
         displayLegoMenu();
         return legoSet;
-
     }
 
     /**
@@ -401,13 +430,14 @@ public class LegoCollection implements Menu{
      */
     @Override
     public LegoSet displaySet(){
+
         for(LegoSet lego : legoSets){
             System.out.println(lego);
         }
+
         System.out.println();
         displayLegoMenu();
         return legoSet;
-
     }
 
     /**
@@ -420,219 +450,310 @@ public class LegoCollection implements Menu{
     @Override
     public LegoSet updateSet(){
         Scanner change = new Scanner(System.in);
+
         LegoSet foundSet = null;
+
         boolean shouldContinue = false;
+
+        String userInputUpdate;
+
         do {
 
-            String userInputUpdate;
-            do {
-                System.out.println("Choose what Lego attribute would you like to update?");
-                System.out.println("Set Number, Lego Name, Lego Theme, Lego Pieces, Lego " +
-                        "Release Date, Lego Price");
-                System.out.println("Enter exactly how you see it: ");
-                userInputUpdate = change.nextLine();
-                if (userInputUpdate.equals("Set Number") ||
-                        userInputUpdate.equals("Lego Name") ||
-                        userInputUpdate.equals("Lego Theme") ||
-                        userInputUpdate.equals("Lego Pieces") ||
-                        userInputUpdate.equals("Lego Release Date") ||
-                        userInputUpdate.equals("Lego Price")) {
-                    shouldContinue = true;
-                }
+            System.out.println("Choose what Lego attribute would you like to update?");
+            System.out.println("Set Number, Lego Name, Lego Theme, Lego Pieces, Lego " +
+                    "Release Date, Lego Price");
+            System.out.println("Enter exactly how you see it: ");
+            userInputUpdate = change.nextLine();
 
-            }while (!shouldContinue);
-            do {
-                try {
-                    switch (userInputUpdate) {
-                        case "Set Number":
-                            do {
-                                try {
-                                    System.out.println("Enter the set number you would like to update:");
-                                    String currentSetNumber = change.nextLine();
+            try {
+                switch (userInputUpdate) {
+                    case "Set Number":
+                        do {
+                            try {
+                                System.out.println("Enter the set number you " +
+                                        "would like to update:");
+                                String currentSetNumber = change.nextLine();
+
+                                if (currentSetNumber.matches("\\d+")) {
                                     int legoNumber = Integer.parseInt(currentSetNumber);
-                                    System.out.println("What value would you like to change it to?");
+                                    System.out.println("What value would you like" +
+                                            " to change it to?");
                                     String updateSetNumber = change.nextLine();
-                                    int newLegoNumber = Integer.parseInt(updateSetNumber);
-                                    for (LegoSet legoSet : legoSets) {
-                                        if (legoSet.getSetNumber() == legoNumber) {
-                                            legoSet.setSetNumber(newLegoNumber);
-                                            foundSet = legoSet;
-                                            System.out.println("You have updated the set number" +
-                                                    " from: " + currentSetNumber + " to "
-                                                    + updateSetNumber);
-                                            System.out.println(foundSet);
-                                            shouldContinue = true;
-                                            break;
+
+                                    if (updateSetNumber.matches("\\d+")) {
+                                        int newLegoNumber = Integer.parseInt(
+                                                updateSetNumber);
+
+                                        for (LegoSet legoSet : legoSets) {
+                                            if (legoSet.getSetNumber() == legoNumber) {
+                                                legoSet.setSetNumber(newLegoNumber);
+                                                foundSet = legoSet;
+                                                System.out.println("You have updated the set" +
+                                                        " number from: "
+                                                        + currentSetNumber + " to "
+                                                        + updateSetNumber);
+                                                System.out.println(foundSet);
+                                                shouldContinue = true;
+                                                break;
+                                            }
                                         }
                                     }
-                                } catch (InputMismatchException e) {
-                                    System.out.println("The input enter does not match");
-                                } catch (Exception e) {
-                                    System.out.println("The set number is not in the list");
-                                    shouldContinue = false;
+                                    else if (updateSetNumber.isBlank()){
+                                        throw new IllegalArgumentException();
+                                    }
+                                    else if(!(updateSetNumber.matches("\\d+"))){
+                                        throw new InputMismatchException();
+                                    }
                                 }
-                            } while (!shouldContinue);
+                                else if (currentSetNumber.isBlank()){
+                                    throw new IllegalArgumentException();
+                                }
+                                else if(!(currentSetNumber.matches("\\d+"))){
+                                    throw new InputMismatchException();
+                                }
 
-                            break;
-                        case "Lego Name":
-                            try{
-                                System.out.println("Enter the Lego set name you would like" +
-                                        " to update:");
+                            } catch (IllegalArgumentException e){
+                                System.out.println("The system did not detect anything.");
+                            } catch (InputMismatchException e){
+                                System.out.println("You have entered a mismatch type! Enter the correct " +
+                        "or another type");
+                            } catch (Exception e){
+                                    System.out.println("The set number is not in the list");
+                            }
+
+                        }while(!shouldContinue);
+                        break;
+
+                    case "Lego Name":
+                        do {
+                            try {
+
+                                System.out.println("Enter the Lego set name you would" +
+                                        " like to update:");
                                 String currentName = change.nextLine();
-                                System.out.println("What name would you like to change it to?");
-                                String newName = change.nextLine();
+
+                                if(currentName.isBlank()){
+                                    throw new IllegalArgumentException();
+                                }
 
                                 for (LegoSet legoSet : legoSets) {
                                     if (legoSet.getName().equalsIgnoreCase(currentName)) {
+                                        System.out.println("What name would you like to change" +
+                                                " it to?");
+                                        String newName = change.nextLine();
+                                        if (newName.matches("[+-]?\\d+(\\.\\d+)?")) {
+                                            throw new InputMismatchException();
+                                        }
+
                                         legoSet.setName(newName);
                                         foundSet = legoSet;
-                                        System.out.println("You have updated the Lego Name" +
-                                                " from: " + currentName + " to "
+
+                                        System.out.println("You have updated the" +
+                                                " Lego Name from: "
+                                                + currentName + " to "
                                                 + newName);
                                         System.out.println(foundSet);
                                         shouldContinue = true;
                                         break;
                                     }
                                 }
-                            }catch(Exception e){
-                                    System.out.println("The input does not exist");
+
+                                if (!(legoSet.getName().equalsIgnoreCase(currentName))) {
+                                    throw new InputMismatchException();
                                 }
 
-                            break;
-                        case "Lego Theme":
+                            } catch (IllegalArgumentException iae){
+                                System.out.println("The system did not detect anything.");
+
+                            } catch (InputMismatchException e) {
+                                System.out.println("You have entered a mismatch type! Enter the correct " +
+                                        "or another type");
+                            } catch (Exception e) {
+                                System.out.println("The lego name you input does not exist");
+                            }
+
+                        }while(!shouldContinue);
+                        break;
+
+                    case "Lego Theme":
+                        do {
                             try {
-                                System.out.println("Enter the Lego set name associated with " +
-                                        "the theme you would like to update:");
+
+                                System.out.println("Enter the Lego set name associated " +
+                                        "with the theme you would like to update:");
                                 String nameCurrentTheme = change.nextLine();
-                                System.out.println("What is the Lego theme you would " +
-                                        "like to update?");
-                                String newTheme = change.nextLine();
+
+                                if (nameCurrentTheme.isBlank()) {
+                                    throw new IllegalArgumentException();
+                                }
+
                                 for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(nameCurrentTheme)) {
+                                    if (legoSet.getName().equalsIgnoreCase(
+                                            nameCurrentTheme)) {
+                                        System.out.println("What is the Lego theme you would " +
+                                                "like to update?");
+                                        String newTheme = change.nextLine();
+
+                                        if (newTheme.matches("[+-]?\\d+(\\.\\d+)?")) {
+                                            throw new InputMismatchException();
+                                        }
+
                                         legoSet.setTheme(newTheme);
                                         foundSet = legoSet;
-                                        System.out.println("You have updated the Lego theme for: " +
-                                                nameCurrentTheme + " to " + newTheme);
+
+                                        System.out.println("You have updated the" +
+                                                " Lego theme for: " +
+                                                nameCurrentTheme + " to "
+                                                + newTheme);
                                         System.out.println(foundSet);
                                         shouldContinue = true;
                                         break;
                                     }
                                 }
-                            } catch (Exception e) {
+
+                                if (!(legoSet.getName().equalsIgnoreCase(nameCurrentTheme))) {
+                                    throw new InputMismatchException();
+                                }
+
+                            } catch (IllegalArgumentException iae){
+                                System.out.println("The system did not detect anything.");
+
+                            } catch (InputMismatchException e) {
+                                System.out.println("You have entered a mismatch type! Enter the correct " +
+                                        "or another type");
+                            }
+                                catch (Exception e) {
                                 System.out.println("To update theme it must be at least 50 characters");
                             }
 
-                            break;
-                        case "Lego Pieces":
-                            try {
-                                System.out.println("Enter the Lego name associated with the " +
-                                        "pieces count you like to update:");
-                                String nameCurrentPieces = change.nextLine();
-                                System.out.println("What is the new pieces count would you like " +
-                                        "to update?");
-                                String newPieces = change.nextLine();
-                                int piecesCount = Integer.parseInt(newPieces);
-                                for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(nameCurrentPieces)) {
-                                        legoSet.setPieces(piecesCount);
-                                        foundSet = legoSet;
-                                        System.out.println("You have updated the number of " +
-                                                "pieces for: " + nameCurrentPieces + " " +
-                                                "lego set: " + newPieces);
-                                        System.out.println(foundSet);
+                        }while(!shouldContinue);
+                        break;
+
+                    case "Lego Pieces":
+                        try {
+
+                            System.out.println("Enter the Lego name associated" +
+                                    " with the pieces count you like to update:");
+                            String nameCurrentPieces = change.nextLine();
+
+                            System.out.println("What is the new pieces count" +
+                                    " would you like to update?");
+                            String newPieces = change.nextLine();
+
+                            int piecesCount = Integer.parseInt(newPieces);
+
+                            for (LegoSet legoSet : legoSets) {
+                                if (legoSet.getName().equalsIgnoreCase(nameCurrentPieces)) {
+                                    legoSet.setPieces(piecesCount);
+                                    foundSet = legoSet;
+                                    System.out.println("You have updated the" +
+                                            " number of pieces for: "
+                                            + nameCurrentPieces + " lego set:" +
+                                            " " + newPieces);
+                                    System.out.println(foundSet);
                                         shouldContinue = true;
-                                        break;
-                                    }
+                                    break;
                                 }
-                            } catch (InputMismatchException e) {
-                                System.out.println("The input enter does not match");
-                            } catch (Exception e) {
-                                System.out.println("Error");
                             }
-                            break;
-                        case "Lego Release Date":
 
-                            System.out.println("Enter the Lego name you want to update " +
-                                    "the release date:");
-                            String nameReleaseDate = change.nextLine();
+                        } catch (InputMismatchException e) {
+                            System.out.println("The input enter does not match");
+                        } catch (Exception e) {
+                            System.out.println("Error");
+                        }
+                        break;
 
-                            System.out.println("Enter new release date" +
-                                    " (MM/DD/YYYY) you would like to update?");
-                            String newReleaseDate = change.nextLine();
-                            try {
-                                for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(nameReleaseDate)) {
+                    case "Lego Release Date":
 
-                                        String[] dateParts = newReleaseDate.split("/");
-                                        int month = Integer.parseInt(dateParts[0]);
-                                        int day = Integer.parseInt(dateParts[1]);
-                                        int year = Integer.parseInt(dateParts[2]);
+                        System.out.println("Enter the Lego name you want to update " +
+                                "the release date:");
+                        String nameReleaseDate = change.nextLine();
 
-                                        legoSet.getReleaseDate().setMonth(month);
-                                        legoSet.getReleaseDate().setDay(day);
-                                        legoSet.getReleaseDate().setYear(year);
+                        System.out.println("Enter new release date" +
+                                " (MM/DD/YYYY) you would like to update?");
+                        String newReleaseDate = change.nextLine();
 
-                                        foundSet = legoSet;
-                                        System.out.println("You have updated the release date" +
-                                                " for: " + nameReleaseDate + " " +
-                                                "lego set: " + legoSet.getReleaseDate());
-                                        System.out.println(foundSet);
+                        try {
+                            for (LegoSet legoSet : legoSets) {
+                                if (legoSet.getName().equalsIgnoreCase(
+                                        nameReleaseDate)) {
+
+                                    String[] dateParts = newReleaseDate.split("/");
+                                    int month = Integer.parseInt(dateParts[0]);
+                                    int day = Integer.parseInt(dateParts[1]);
+                                    int year = Integer.parseInt(dateParts[2]);
+
+                                    legoSet.getReleaseDate().setMonth(month);
+                                    legoSet.getReleaseDate().setDay(day);
+                                    legoSet.getReleaseDate().setYear(year);
+
+                                    foundSet = legoSet;
+                                    System.out.println("You have updated the" +
+                                            " release date for: " +
+                                            nameReleaseDate + " lego set: "
+                                            + legoSet.getReleaseDate());
+                                    System.out.println(foundSet);
                                         shouldContinue = true;
-                                        break;
-                                    }
+                                    break;
                                 }
-                            } catch (Exception e) {
-                                System.out.println("To update release date it must be MM/DD/YYYY");
                             }
-                            break;
-                        case "Lego Price":
-                            System.out.println("Enter the Lego name associated with the " +
-                                    "price you would like to update:");
-                            String legoNamePrice = change.nextLine();
-                            System.out.println("What is the new price you would like to change" +
-                                    " it to?");
-                            try {
-                                String newPrice = change.nextLine();
-                                double formatPrice = Double.parseDouble(newPrice);
-                                for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(legoNamePrice)) {
-                                        legoSet.setPrice(formatPrice);
-                                        foundSet = legoSet;
-                                        System.out.println("You have updated the price for " +
-                                                "the " + legoNamePrice + " lego set: " +
-                                                newPrice);
-                                        System.out.println(foundSet);
+
+                        } catch (Exception e) {
+                            System.out.println("To update release date it must be" +
+                                    " MM/DD/YYYY");
+                        }
+                        break;
+
+                    case "Lego Price":
+                        System.out.println("Enter the Lego name associated with the " +
+                                "price you would like to update:");
+                        String legoNamePrice = change.nextLine();
+                        System.out.println("What is the new price you would " +
+                                "like to change it to?");
+                        try {
+                            String newPrice = change.nextLine();
+                            double formatPrice = Double.parseDouble(newPrice);
+
+                            for (LegoSet legoSet : legoSets) {
+                                if (legoSet.getName().equalsIgnoreCase(legoNamePrice)) {
+                                    legoSet.setPrice(formatPrice);
+                                    foundSet = legoSet;
+                                    System.out.println("You have updated the" +
+                                            " price for the "
+                                            + legoNamePrice + " lego set: "
+                                            + newPrice);
+                                    System.out.println(foundSet);
                                         shouldContinue = true;
-                                        break;
-                                    }
+                                    break;
                                 }
-
-                            } catch (Exception e) {
-                                System.out.println("You need to enter a proper price format");
                             }
-                            break;
-                        default:
-                            System.out.println("The system does not understand" +
-                                    "what you are looking for. Try entering" +
-                                    "something else.");
-                    }
-                    if (foundSet == null) {
-                        System.out.println("That Lego Set doesn't exist in the list!");
-                        updateSet();
-                    }
-                    System.out.println();
-                    displayLegoMenu();
 
-                } catch (InputMismatchException ime) {
-                    System.out.println("You have entered a mismatch type! Enter the correct " +
-                            "or another type");
-                    change.nextLine();
-                } catch (Exception e) {
-                    System.out.println("Something went wrong! Try entering attribute input " +
-                            "as shown");
+                        } catch (Exception e) {
+                            System.out.println("You need to enter a proper price" +
+                                    " format");
+                        }
+                        break;
+
+                    default:
+                        System.out.println("The system does not understand" +
+                                "what you are looking for. Try entering" +
+                                " something else.");
                 }
-            }while(!shouldContinue);
-        }while(foundSet == null);
+            } catch (NullPointerException npe) {
+                System.out.println("That Lego Set doesn't exist in the list!");
+            } catch (NumberFormatException nfe) {
+                System.out.println("Please enter a number greater" +
+                        " than 0");
+            } catch (InputMismatchException ime) {
+                System.out.println("You have entered a mismatch type! Enter the correct " +
+                        "or another type");
+            } catch (Exception e) {
+                System.out.println("Something went wrong! Try entering attribute input " +
+                        "as shown");
+            }
+        }while(!shouldContinue);
+
+        displayLegoMenu();
         return foundSet;
     }
 
@@ -648,10 +769,7 @@ public class LegoCollection implements Menu{
     public double retrieveTotal(){
         double totalCost = 0.00;
         for(LegoSet lego : legoSets){
-            lego.getPrice();
             totalCost += lego.getPrice();
-
-
         }
         System.out.printf("The total cost you spent on all of your LEGO before tax is: $%.2f", totalCost);
 
@@ -675,9 +793,8 @@ public class LegoCollection implements Menu{
         if(exit.equalsIgnoreCase("No")){
             System.out.println("You will be redirected to the LEGO menu option");
             displayLegoMenu();
-
-
         }
+
         if(exit.equalsIgnoreCase("Yes")){
             System.out.print("Press Enter");
             out.nextLine();
@@ -685,7 +802,6 @@ public class LegoCollection implements Menu{
             System.out.println("You are now exiting the program");
             System.out.println("Program ended!");
             return false;
-
         }
         return true;
     }
