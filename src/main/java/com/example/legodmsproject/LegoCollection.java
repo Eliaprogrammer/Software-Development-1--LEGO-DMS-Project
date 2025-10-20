@@ -113,6 +113,7 @@ public class LegoCollection implements Menu{
                 if (!(file.exists())) {
                     throw new IOException();
                 }
+
                 System.out.println("The File was successfully uploaded. You can now " +
                         "see the file details.");
 
@@ -153,13 +154,13 @@ public class LegoCollection implements Menu{
                 System.out.println("System was unable to location the file you " +
                         "are trying to upload.");
                 System.out.println();
+                return false;
 
             } catch (Exception e) {
                 System.out.println("An error has occurred.");
+                return false;
             }
         }while(!isValid);
-
-        return false;
     }
 
     /**

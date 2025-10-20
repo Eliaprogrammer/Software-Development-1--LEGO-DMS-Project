@@ -52,6 +52,7 @@ class LegoCollectionTest {
             ByteArrayInputStream changeInputFormat = new ByteArrayInputStream(
                     wrongLocation.getBytes());
             System.setIn(changeInputFormat);
+
             assertFalse(legoCollection.addSetFromFile(), "The file should not match");
         } finally{
             System.setIn(originalInput);
