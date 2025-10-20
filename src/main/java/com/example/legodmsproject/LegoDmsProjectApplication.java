@@ -3,6 +3,9 @@ package com.example.legodmsproject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Elia Schwartz
  * October 6, 2025,
@@ -18,7 +21,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LegoDmsProjectApplication {
     public static void main(String[] args) {
-       LegoCollection LegoCollection = new LegoCollection();
+       List<LegoSet> legoSets = new ArrayList<>();
+       LegoCollection LegoCollection = new LegoCollection(legoSets);
 
        LegoCollection.displayLegoMenu();
 
