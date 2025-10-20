@@ -14,11 +14,15 @@ import java.io.IOException;
 import java.util.*;
 
 public class LegoCollection implements Menu{
-    LegoSet legoSet = new LegoSet();
+    private LegoSet legoSet = new LegoSet();
 
-    List<LegoSet> legoSets = new ArrayList<>();
+    private List<LegoSet> legoSets = new ArrayList<>();
 
     boolean isValid = false;
+
+    public LegoCollection(List<LegoSet>  legoSets){
+        this.legoSets = legoSets;
+    }
 
 
     /**
@@ -29,7 +33,7 @@ public class LegoCollection implements Menu{
      * with the menu options
      */
     @Override
-    public String displayLegoMenu(){
+    public String displayLegoMenu() {
         Scanner menu = new Scanner(System.in);
         String menuOption;
         do {
@@ -47,39 +51,39 @@ public class LegoCollection implements Menu{
 
             switch (menuOption) {
                 case "1":
-                    Scanner input = new Scanner(System.in);
-                    addSetFromFile(input);
-                    isValid = true;
+                    addSetFromFile();
                     break;
-                case"2":
+                case "2":
                     addSetManually();
-                    isValid = true;
                     break;
                 case "3":
-                    removeSet();
-                    isValid = true;
+                    LegoSet removed = removeSet();
+                    System.out.println("You are removing " +
+                            removed + " from the list " +
+                            "of LEGO sets");
                     break;
                 case "4":
                     displaySet();
-                    isValid = true;
                     break;
                 case "5":
                     updateSet();
-                    isValid = true;
                     break;
                 case "6":
-                    retrieveTotal();
-                    isValid = true;
+                    double totalCostOfLegos = retrieveTotal();
+                    System.out.printf("The total cost you spent on " +
+                            "all of your LEGO before tax is: $%.2f", totalCostOfLegos);
+                    System.out.println();
+                    System.out.println();
+
                     break;
                 case "7":
                     exit();
-                    isValid = true;
                     break;
                 default:
                     System.out.println("Invalid option");
             }
 
-        }while(!isValid);
+        } while (!(menuOption.equals("7")));
         return menuOption;
     }
 
@@ -91,14 +95,15 @@ public class LegoCollection implements Menu{
      * can enter the location of a file to add to
      * the list
      */
-    public boolean addSetFromFile(Scanner input) {
-
-        System.out.println("You are in the process of adding LEGO set(s) from a " +
-                "file to the system.");
+    public boolean addSetFromFile() {
+        Scanner input = new Scanner(System.in);
+        isValid = false;
+        do {
+            System.out.println("You are in the process of adding LEGO set(s) from a " +
+                    "file to the system.");
             try {
+
                 System.out.println("Please enter your file location/path:");
-//                File file = new File("C:\\Users\\Owner\\OneDrive\\Desktop\\LEGO Collection List.txt");
-//                Scanner fileReader = new Scanner(file);
                 String fileLocation = input.nextLine();
                 File file = new File(fileLocation);
                 Scanner fileReader = new Scanner(file);
@@ -140,19 +145,19 @@ public class LegoCollection implements Menu{
                 }
 
                 fileReader.close();
+                isValid = true;
                 System.out.println();
-                displayLegoMenu();
                 return true;
 
             } catch (IOException e) {
                 System.out.println("System was unable to location the file you " +
                         "are trying to upload.");
                 System.out.println();
-                addSetFromFile(input);
-                return false;
+
             } catch (Exception e) {
                 System.out.println("An error has occurred.");
             }
+        }while(!isValid);
 
         return false;
     }
@@ -166,16 +171,20 @@ public class LegoCollection implements Menu{
      * about a lego set to add it to the list.
      */
     public boolean addSetManually() {
+        Scanner input = new Scanner(System.in);
+
+        boolean okToContinue = false;
+
+        int numberOfSets = 0;
+        isValid = false;
         do {
-            Scanner input = new Scanner(System.in);
             try {
                 System.out.println("You are in the process of manually entering data " +
                         "for adding a LEGO set(s) to the system.");
 
-                boolean okToContinue = false;
-                int numberOfSets = 0;
                 while (!okToContinue) {
-                    System.out.println("How many LEGO sets you would like to add at a time?");
+                    System.out.println("How many LEGO sets you would like to add" +
+                            " at a time?");
                     String userEntry = input.nextLine();
 
                     try {
@@ -189,7 +198,6 @@ public class LegoCollection implements Menu{
                 }
                 for (int setIndex = 0; setIndex < numberOfSets; setIndex++) {
                     int setNumber;
-
                     do {
                         try {
 
@@ -205,9 +213,11 @@ public class LegoCollection implements Menu{
 
                         } catch (InputMismatchException e) {
                             System.out.println("You enter the wrong input type");
+                            isValid = false;
                         } catch (Exception e) {
                             System.out.println("The input is not a proper set number" +
                                     " (whole number is needed).");
+                            isValid = false;
                         }
 
                     } while (!isValid);
@@ -288,7 +298,9 @@ public class LegoCollection implements Menu{
                         try {
 
                             System.out.println("Please enter the number of Pieces" +
-                                    " the LEGO Set:");
+                                    " the LEGO Set");
+                            System.out.println("Exclude the comma for anything over 999" +
+                                    " pieces");
                             String userLegoNumberOfPieces = input.nextLine().trim();
                             numberOfPieces = Integer.parseInt(userLegoNumberOfPieces);
 
@@ -308,9 +320,9 @@ public class LegoCollection implements Menu{
 
 
                     do {
-                        System.out.println(("Please enter the date the LEGO set" +
-                                " was release: MM/DD/YYYY"));
                         try {
+                            System.out.println(("Please enter the date the LEGO set" +
+                                    " was release: MM/DD/YYYY"));
                             String userReleaseDate = input.nextLine().trim();
                             String[] dateParts = userReleaseDate.split("/");
                             int month = Integer.parseInt(dateParts[0]);
@@ -328,8 +340,8 @@ public class LegoCollection implements Menu{
                             }
 
                         } catch (Exception e) {
-                            System.out.println("The system does not recognize the date format. " +
-                                    "Please re-enter");
+                            System.out.println("The system does not recognize the" +
+                                    " date format. Please re-enter");
                             isValid = false;
                         }
 
@@ -365,21 +377,24 @@ public class LegoCollection implements Menu{
                     System.out.println(lego);
                     System.out.println();
                 }
+                isValid = true;
+                return true;
 
             } catch (InputMismatchException e) {
                 System.out.println("You have inputted the wrong value. Please try again.");
                 addSetManually();
+                isValid = false;
             } catch (Exception e) {
                 System.out.println("The system did not recognize something");
+                isValid = false;
             }
 
-        }while(!isValid);
+        }while(!(isValid));
 
         System.out.println("Here are all the LEGO sets that are " +
                 "currently in the list. ");
         displaySet();
-        displayLegoMenu();
-        return true;
+        return false;
     }
 
     /**
@@ -391,35 +406,40 @@ public class LegoCollection implements Menu{
      */
     @Override
     public LegoSet removeSet(){
+        isValid = false;
+        LegoSet removedSet = null;
+
         do {
             try{
-
-            System.out.println("Please enter the LEGO set name you wish to remove and " +
-                    "everything associated with it: ");
                 Scanner remove = new Scanner(System.in);
-                String userChoice = remove.nextLine();
+                System.out.println("Please enter the LEGO set name you wish to remove and " +
+                    "everything associated with it: ");
+                String legoName = remove.nextLine().trim();
 
-                for (LegoSet lego : legoSets) {
-                    if(lego.getName().equalsIgnoreCase(userChoice)){
-                        System.out.println("You are removing " +
-                                userChoice + " from the list " +
-                                "of LEGO sets");
-                        legoSets.remove(lego);
+
+                Iterator<LegoSet> iterator = legoSets.iterator();
+                while(iterator.hasNext()){
+                    LegoSet lego = iterator.next();
+                    if(lego.getName().equalsIgnoreCase(legoName)){
+
+                        iterator.remove();
+                        removedSet = lego;
                         isValid = true;
                         break;
                     }
                 }
-
+                if(!(legoSet.getName().equalsIgnoreCase(legoName))){
+                    throw new Exception();
+                }
+                return removedSet;
             }catch (Exception e){
                 System.out.println("System can not remove the LEGO set");
                 System.out.println("The wrong data value was entered. Please try again. ");
-                removeSet();
             }
 
         }while(!isValid);
 
-        displayLegoMenu();
-        return legoSet;
+        return removedSet;
     }
 
     /**
@@ -433,11 +453,9 @@ public class LegoCollection implements Menu{
 
         for(LegoSet lego : legoSets){
             System.out.println(lego);
+            legoSet = lego;
         }
-
-        System.out.println();
-        displayLegoMenu();
-        return legoSet;
+       return legoSet;
     }
 
     /**
@@ -458,7 +476,6 @@ public class LegoCollection implements Menu{
         String userInputUpdate;
 
         do {
-
             System.out.println("Choose what Lego attribute would you like to update?");
             System.out.println("Set Number, Lego Name, Lego Theme, Lego Pieces, Lego " +
                     "Release Date, Lego Price");
@@ -736,7 +753,7 @@ public class LegoCollection implements Menu{
 
                     default:
                         System.out.println("The system does not understand" +
-                                "what you are looking for. Try entering" +
+                                " what you are looking for. Try entering" +
                                 " something else.");
                 }
             } catch (NullPointerException npe) {
@@ -753,7 +770,6 @@ public class LegoCollection implements Menu{
             }
         }while(!shouldContinue);
 
-        displayLegoMenu();
         return foundSet;
     }
 
@@ -771,11 +787,6 @@ public class LegoCollection implements Menu{
         for(LegoSet lego : legoSets){
             totalCost += lego.getPrice();
         }
-        System.out.printf("The total cost you spent on all of your LEGO before tax is: $%.2f", totalCost);
-
-        System.out.println();
-        System.out.println();
-        displayLegoMenu();
         return totalCost;
     }
 
@@ -787,22 +798,26 @@ public class LegoCollection implements Menu{
      * exit the program
      */
     public boolean exit(){
-        System.out.println("Do you want to exit the program?");
         Scanner out = new Scanner(System.in);
-        String exit = out.nextLine();
-        if(exit.equalsIgnoreCase("No")){
-            System.out.println("You will be redirected to the LEGO menu option");
-            displayLegoMenu();
-        }
+        String exit;
+        while(true) {
+            System.out.println("Do you want to exit the program?");
+            exit = out.nextLine();
+            if (exit.equalsIgnoreCase("No")) {
+                System.out.println("You will be redirected to the LEGO menu option");
+                displayLegoMenu();
+                return false;
+            }
 
-        if(exit.equalsIgnoreCase("Yes")){
-            System.out.print("Press Enter");
-            out.nextLine();
-            System.out.println();
-            System.out.println("You are now exiting the program");
-            System.out.println("Program ended!");
-            return false;
+            if (exit.equalsIgnoreCase("Yes")) {
+                System.out.print("Press Enter");
+                out.nextLine();
+                System.out.println();
+                System.out.println("You are now exiting the program");
+                System.out.println("Program ended!");
+                return true;
+            }
+            System.out.println("You can only choose from Yes or No");
         }
-        return true;
     }
 }
