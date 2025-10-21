@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class LegoCollection implements Menu{
-    private LegoSet legoSet = new LegoSet();
+    LegoSet legoSet = new LegoSet();
 
-    private List<LegoSet> legoSets = new ArrayList<>();
+    List<LegoSet> legoSets = new ArrayList<>();
 
     boolean isValid = false;
 

@@ -10,9 +10,17 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Elia Schwartz
+ * October 21, 2025,
+ * Software Development 1 CEN 3024C -14877
+ * LegoCollectionTest.java
+ * Purpose: Created multiple unit test methods
+ * to analyze if the LegoCollection methods
+ * for working accurate and are outputting correctly
+ */
 class LegoCollectionTest {
 
     List<LegoSet> legoSets;
