@@ -18,7 +18,13 @@ class LegoCollectionTest {
     List<LegoSet> legoSets;
     LegoCollection legoCollection;
 
-
+/**
+ * Method: setUp
+ * Parameters: none
+ * return: void
+ * Purpose: initializing the legoSets list and
+ * the legoCollection object
+ */
     @BeforeEach
     void setUp(){
         legoSets = new ArrayList<>();
@@ -26,7 +32,13 @@ class LegoCollectionTest {
 
     }
 
-
+/**
+ * Method: testAddSetFromFileSuccessfully
+ * Parameters: none
+ * return: void
+ * Purpose: Test to see if the program can upload a file
+ * successfully
+ */
     @Test
     void testAddSetFromFileSuccessfully() {
         InputStream originalInput = System.in;
@@ -44,6 +56,12 @@ class LegoCollectionTest {
         }
     }
 
+    /**
+     * Method: testAddSetFromFileFail
+     * Parameters: none
+     * return: void
+     * Purpose: Assess if the program cannot upload a file
+     */
     @Test
     void testAddSetFromFileFail(){
         InputStream originalInput = System.in;
@@ -59,6 +77,13 @@ class LegoCollectionTest {
         }
     }
 
+    /**
+     * Method: testAddSetManually
+     * Parameters: none
+     * return: void
+     * Purpose: Test to see if the program can accurately
+     * add lego sets manually
+     */
     @Test
     void testAddSetManually() {
         InputStream originalInput = System.in;
@@ -82,6 +107,13 @@ class LegoCollectionTest {
         }
     }
 
+    /**
+     * Method: testRemoveSet
+     * Parameters: none
+     * return: void
+     * Purpose: See if the program can accurately remove
+     * a lego set from the list
+     */
     @Test
     void testRemoveSet() {
         InputStream originalInput = System.in;
@@ -110,6 +142,13 @@ class LegoCollectionTest {
         }
     }
 
+    /**
+     * Method: testDisplaySet
+     * Parameters: none
+     * return: void
+     * Purpose: Test to see if the program can display the
+     * all the LegoSet object in the list
+     */
     @Test
      void testDisplaySet() {
         PrintStream originalOut = System.out;
@@ -127,10 +166,26 @@ class LegoCollectionTest {
         }
     }
 
+    /**
+     * Method: testAddSetFromFileSuccessfully
+     * Parameters: none
+     * return: void
+     * Purpose: Test to see if the program can
+     * update a LegoSet Object by an attribute
+
+     */
     @Test
     void testUpdateSet() {
     }
 
+    /**
+     * Method: testAddSetFromFileSuccessfully
+     * Parameters: none
+     * return: void
+     * Purpose: Test to see if the program can
+     * retrieve the total cost of all lego sets in
+     * the list.
+     */
     @Test
     void testRetrieveTotal() {
 
