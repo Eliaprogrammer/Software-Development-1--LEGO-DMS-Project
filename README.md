@@ -5,3 +5,8 @@ CEN 3024C - 14877
 This project was a school assignment. Students were tasked with creating a database management system.
 I based my database management system on my hobby of LEGO. The project simulated the software development 
 process. The files I've attached are Phase 1 of the project. Getting the logic and validation accurate.
+
+
+In Phase 2 of the project, I created a test file containing unit tests for the primary actions the user will 
+perform when the program is run. Analyzing the expected and actual output when the method is called.
+Fixing issues that were previously there.
