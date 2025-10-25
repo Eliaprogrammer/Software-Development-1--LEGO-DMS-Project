@@ -181,7 +181,7 @@ public class LegoCollection implements Menu{
         do {
             try {
                 System.out.println("You are in the process of manually entering data " +
-                        "for adding a LEGO set(s) to the system.");
+                        "information for LEGO set(s) to the system.");
 
                 while (!okToContinue) {
                     System.out.println("How many LEGO sets you would like to add" +
@@ -199,6 +199,8 @@ public class LegoCollection implements Menu{
                 }
                 for (int setIndex = 0; setIndex < numberOfSets; setIndex++) {
                     int setNumber;
+                    LegoSet lego = new LegoSet();
+
                     do {
                         try {
 
@@ -208,7 +210,7 @@ public class LegoCollection implements Menu{
 
                             setNumber = Integer.parseInt(userSetNumber);
                             if (setNumber > 0) {
-                                legoSet.setSetNumber(setNumber);
+                                lego.setSetNumber(setNumber);
                                 isValid = true;
                             }
 
@@ -239,7 +241,7 @@ public class LegoCollection implements Menu{
                             if (userLegoName.isBlank()) {
                                 throw new IllegalArgumentException();
                             } else if (userLegoName.length() <= 50) {
-                                legoSet.setName(userLegoName);
+                                lego.setName(userLegoName);
                                 isValid = true;
                             } else {
                                 throw new Exception();
@@ -273,7 +275,7 @@ public class LegoCollection implements Menu{
                             if (userLegoTheme.isBlank()) {
                                 throw new IllegalArgumentException();
                             } else if (userLegoTheme.length() <= 50) {
-                                legoSet.setTheme(userLegoTheme);
+                                lego.setTheme(userLegoTheme);
                                 isValid = true;
                             } else {
                                 throw new Exception();
@@ -306,7 +308,7 @@ public class LegoCollection implements Menu{
                             numberOfPieces = Integer.parseInt(userLegoNumberOfPieces);
 
                             if (numberOfPieces > 0) {
-                                legoSet.setPieces(numberOfPieces);
+                                lego.setPieces(numberOfPieces);
                                 isValid = true;
                             } else {
                                 throw new Exception();
@@ -334,7 +336,7 @@ public class LegoCollection implements Menu{
                                     (day >= 1 && day <= 31)
                                     && (year >= 1700 && year <= 2025)) {
                                 ReleaseDate releaseDate = new ReleaseDate(month, day, year);
-                                legoSet.setReleaseDate(releaseDate);
+                                lego.setReleaseDate(releaseDate);
                                 isValid = true;
                             } else {
                                 throw new Exception();
@@ -358,7 +360,7 @@ public class LegoCollection implements Menu{
                             legoPrice = Double.parseDouble(userLegoPrice);
 
                             if (legoPrice > 0.0) {
-                                legoSet.setPrice(legoPrice);
+                                lego.setPrice(legoPrice);
                                 isValid = true;
                             } else {
                                 throw new Exception();
@@ -371,9 +373,6 @@ public class LegoCollection implements Menu{
 
                     } while (!isValid);
 
-                    LegoSet lego = new LegoSet(legoSet.getSetNumber(), legoSet.getName(),
-                            legoSet.getTheme(), legoSet.getPieces(),
-                            legoSet.getReleaseDate(), legoSet.getPrice());
                     legoSets.add(lego);
                     System.out.println(lego);
                     System.out.println();
@@ -383,7 +382,6 @@ public class LegoCollection implements Menu{
 
             } catch (InputMismatchException e) {
                 System.out.println("You have inputted the wrong value. Please try again.");
-                addSetManually();
                 isValid = false;
             } catch (Exception e) {
                 System.out.println("The system did not recognize something");
@@ -470,12 +468,11 @@ public class LegoCollection implements Menu{
     public LegoSet updateSet(){
         Scanner change = new Scanner(System.in);
 
-        LegoSet foundSet = null;
-
         boolean shouldContinue = false;
 
         String userInputUpdate;
 
+        LegoSet foundSet = null;
         do {
             System.out.println("Choose what Lego attribute would you like to update?");
             System.out.println("Set Number, Lego Name, Lego Theme, Lego Pieces, Lego " +
@@ -502,11 +499,11 @@ public class LegoCollection implements Menu{
                                         int newLegoNumber = Integer.parseInt(
                                                 updateSetNumber);
 
-                                        for (LegoSet legoSet : legoSets) {
-                                            if (legoSet.getSetNumber() == legoNumber) {
-                                                legoSet.setSetNumber(newLegoNumber);
-                                                foundSet = legoSet;
-                                                System.out.println("You have updated the set" +
+                                        for (LegoSet lego : legoSets) {
+                                            if (lego.getSetNumber() == legoNumber) {
+                                                lego.setSetNumber(newLegoNumber);
+                                                foundSet = lego;
+                                                System.out.println("You have updated the lego" +
                                                         " number from: "
                                                         + currentSetNumber + " to "
                                                         + updateSetNumber);
@@ -554,8 +551,8 @@ public class LegoCollection implements Menu{
                                     throw new IllegalArgumentException();
                                 }
 
-                                for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(currentName)) {
+                                for (LegoSet lego : legoSets) {
+                                    if (lego.getName().equalsIgnoreCase(currentName)) {
                                         System.out.println("What name would you like to change" +
                                                 " it to?");
                                         String newName = change.nextLine();
@@ -563,8 +560,8 @@ public class LegoCollection implements Menu{
                                             throw new InputMismatchException();
                                         }
 
-                                        legoSet.setName(newName);
-                                        foundSet = legoSet;
+                                        lego.setName(newName);
+                                        foundSet = lego;
 
                                         System.out.println("You have updated the" +
                                                 " Lego Name from: "
@@ -574,10 +571,6 @@ public class LegoCollection implements Menu{
                                         shouldContinue = true;
                                         break;
                                     }
-                                }
-
-                                if (!(legoSet.getName().equalsIgnoreCase(currentName))) {
-                                    throw new InputMismatchException();
                                 }
 
                             } catch (IllegalArgumentException iae){
@@ -605,8 +598,8 @@ public class LegoCollection implements Menu{
                                     throw new IllegalArgumentException();
                                 }
 
-                                for (LegoSet legoSet : legoSets) {
-                                    if (legoSet.getName().equalsIgnoreCase(
+                                for (LegoSet lego : legoSets) {
+                                    if (lego.getName().equalsIgnoreCase(
                                             nameCurrentTheme)) {
                                         System.out.println("What is the Lego theme you would " +
                                                 "like to update?");
@@ -616,8 +609,8 @@ public class LegoCollection implements Menu{
                                             throw new InputMismatchException();
                                         }
 
-                                        legoSet.setTheme(newTheme);
-                                        foundSet = legoSet;
+                                        lego.setTheme(newTheme);
+                                        foundSet = lego;
 
                                         System.out.println("You have updated the" +
                                                 " Lego theme for: " +
@@ -627,10 +620,6 @@ public class LegoCollection implements Menu{
                                         shouldContinue = true;
                                         break;
                                     }
-                                }
-
-                                if (!(legoSet.getName().equalsIgnoreCase(nameCurrentTheme))) {
-                                    throw new InputMismatchException();
                                 }
 
                             } catch (IllegalArgumentException iae){
@@ -660,13 +649,13 @@ public class LegoCollection implements Menu{
 
                             int piecesCount = Integer.parseInt(newPieces);
 
-                            for (LegoSet legoSet : legoSets) {
-                                if (legoSet.getName().equalsIgnoreCase(nameCurrentPieces)) {
-                                    legoSet.setPieces(piecesCount);
-                                    foundSet = legoSet;
+                            for (LegoSet lego : legoSets) {
+                                if (lego.getName().equalsIgnoreCase(nameCurrentPieces)) {
+                                    lego.setPieces(piecesCount);
+                                    foundSet = lego;
                                     System.out.println("You have updated the" +
                                             " number of pieces for: "
-                                            + nameCurrentPieces + " lego set:" +
+                                            + nameCurrentPieces + " lego lego:" +
                                             " " + newPieces);
                                     System.out.println(foundSet);
                                         shouldContinue = true;
@@ -692,8 +681,8 @@ public class LegoCollection implements Menu{
                         String newReleaseDate = change.nextLine();
 
                         try {
-                            for (LegoSet legoSet : legoSets) {
-                                if (legoSet.getName().equalsIgnoreCase(
+                            for (LegoSet lego : legoSets) {
+                                if (lego.getName().equalsIgnoreCase(
                                         nameReleaseDate)) {
 
                                     String[] dateParts = newReleaseDate.split("/");
@@ -701,15 +690,15 @@ public class LegoCollection implements Menu{
                                     int day = Integer.parseInt(dateParts[1]);
                                     int year = Integer.parseInt(dateParts[2]);
 
-                                    legoSet.getReleaseDate().setMonth(month);
-                                    legoSet.getReleaseDate().setDay(day);
-                                    legoSet.getReleaseDate().setYear(year);
+                                    lego.getReleaseDate().setMonth(month);
+                                    lego.getReleaseDate().setDay(day);
+                                    lego.getReleaseDate().setYear(year);
 
-                                    foundSet = legoSet;
+                                    foundSet = lego;
                                     System.out.println("You have updated the" +
                                             " release date for: " +
-                                            nameReleaseDate + " lego set: "
-                                            + legoSet.getReleaseDate());
+                                            nameReleaseDate + " lego lego: "
+                                            + lego.getReleaseDate());
                                     System.out.println(foundSet);
                                         shouldContinue = true;
                                     break;
@@ -732,13 +721,13 @@ public class LegoCollection implements Menu{
                             String newPrice = change.nextLine();
                             double formatPrice = Double.parseDouble(newPrice);
 
-                            for (LegoSet legoSet : legoSets) {
-                                if (legoSet.getName().equalsIgnoreCase(legoNamePrice)) {
-                                    legoSet.setPrice(formatPrice);
-                                    foundSet = legoSet;
+                            for (LegoSet lego : legoSets) {
+                                if (lego.getName().equalsIgnoreCase(legoNamePrice)) {
+                                    lego.setPrice(formatPrice);
+                                    foundSet = lego;
                                     System.out.println("You have updated the" +
                                             " price for the "
-                                            + legoNamePrice + " lego set: "
+                                            + legoNamePrice + " lego lego: "
                                             + newPrice);
                                     System.out.println(foundSet);
                                         shouldContinue = true;
