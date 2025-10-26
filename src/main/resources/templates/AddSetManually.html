@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AddSetManually</title>
+</head>
+<style>
+    input {
+        display: block;
+        margin-bottom: 30px;
+
+    }
+</style>
+<body>
+<h2>
+    You are in the process of manually entering data information for (a) LEGO set(s)
+</h2>
+<div>
+    <form th:action = "@{/AddSetManuallyl}" th:object = "${AddSetManually}" method = "post">
+        <lable for = "number">
+            How many LEGO sets you would like to add at a time?
+        </lable>
+        <input type = "number" id = "number" name = "name" placeholder ="Select a number" />
+
+
+        <label>
+            Please enter the nth LEGO set (set number) you are adding to the system:
+        </label>
+        <input type = "number" id = "setNumber" placeholder ="Select a number" />
+
+
+        <label>
+            Please enter the name of the LEGO set you would like to add: to the system
+        </label>
+        <input type = "text" id = "legoName" placeholder ="Select a number" />
+
+
+        <label>
+            Please enter the theme of the LEGO Set:
+        </label>
+        <input type = "text" id = "legoTheme" placeholder ="Enter the theme of the LEGO" />
+
+
+        <label>
+            Please enter the number of pieces the LEGO Set
+            Exclude the comma for anything over 999 pieces;
+        </label>
+        <input type = "text" id = "pieces" placeholder ="Number of LEGO Pieces" />
+
+
+        <label>
+            Please enter the date the LEGO set was release:
+        </label>
+        <input type = "date" id = "releaseDate" placeholder ="MM/DD/YYYY" />
+
+
+        <label>
+            Please enter the price of the LEGO Set (exclude the $)
+        </label>
+        <input type = "number" id = "price" name = "price" step = "any" min = 0 placeholder ="Select a number"/>
+
+
+        <button type = "submit" id = "submit">Submit</button>
+        <button type = "reset" id = "reset">Clear</button>
+
+        <p>
+            Here are all the LEGO sets that are currently in the list.
+            <span id = "displayArea"></span></p>
+    </form>
+</div>
+
+</body>
+</html>

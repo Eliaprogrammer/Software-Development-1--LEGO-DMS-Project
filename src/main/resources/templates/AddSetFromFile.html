@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AddSetFromFile</title>
+</head>
+<body>
+<h2>You are in the process of adding LEGO set(s) from a file to the system!</h2>
+<p>Please choose your file location/path:</p>
+<form th:action = "@{/UploadFile}" method = "post">
+    <input type = "file" name = "file">
+    <input type = "submit">
+<!--    <pre id = "fileContent"></pre>-->
+<!--    <output id = "fileContent"></output>-->
+</form>
+</body>
+</html>
