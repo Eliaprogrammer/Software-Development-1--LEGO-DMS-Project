@@ -34,12 +34,17 @@
 
     }
 </style>
+
 <body>
 <img src = "/images/lego.jpg" alt = "LEGO Logo" width = 539 height = 169>
-<h1><em>Welcome to Brick-a-verse!</em></h1>
-<h3>This is where you can control and manage your LEGO collection</h3>
-<p>Began by clicking the button below to start or access your collection</p>
-<button onclick = " location.href = '/LEGOMenu' ">Begin</button>
 
+<h1><em>Welcome to Brick-a-verse!</em></h1>
+
+<h3>This is where you can control and manage your LEGO collection</h3>
+
+<p>Began by clicking the button below to start or access your collection</p>
+
+<button th:onclick = " |location.href = '@{/LEGOMenu}' |">Begin</button>
 </body>
+
 </html>

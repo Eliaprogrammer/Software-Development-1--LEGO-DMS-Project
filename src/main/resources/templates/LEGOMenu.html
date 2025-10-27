@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>LEGO DMS Menu</title>
@@ -16,19 +16,28 @@
         font-size: 16px;
     }
 
+    body {
+        margin-left: 30px;
+    }
+
 </style>
+
 <body>
+
 <h1>LEGO Menu</h1>
+
 <p>Choose from one of the following actions:</p>
+
 <div class = "button-container">
-    <button onclick = "locatiion.href = '/AddSetFromFile' ">1. Add LEGO Set From File</button>
-    <button onclick = "locatiion.href = '/AddSetManually' ">2. Add LEGO Set Manually</button>
-    <button onclick = "locatiion.href = '/RemoveSet' ">3. Remove LEGO Set</button>
-    <button onclick = "locatiion.href = '/DisplaySets' ">4. Display LEGO Sets</button>
-    <button onclick = "locatiion.href = '/UpdateSet' ">5. Update LEGO Set</button>
-    <button onclick = "locatiion.href = '/RetrieveTotalCost' ">6. Retrieve Total Cost of LEGO Sets</button>
-    <button onclick = "locatiion.href = '/Exit' ">7. Exit</button>
+    <button th:onclick = "|location.href = '@{/AddSetFromFile}' |">1. Add LEGO Set From File</button>
+    <button th:onclick = "|location.href = '@{/AddSetManually}' | ">2. Add LEGO Set Manually</button>
+    <button th:onclick = "|location.href = '@{/RemoveSet}' | ">3. Remove LEGO Set</button>
+    <button th:onclick = "|location.href = '@{/DisplaySets}' | ">4. Display LEGO Sets</button>
+    <button th:onclick = "|location.href = '@{/UpdateSet}' | ">5. Update LEGO Set</button>
+    <button th:onclick = "|location.href = '@{/RetrieveTotalCost}' | ">6. Retrieve Total Cost of LEGO Sets</button>
+    <button th:onclick = "|location.href = '@{/Exit}' | ">7. Exit</button>
 </div>
 
 </body>
+
 </html>

@@ -1,28 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Exit</title>
 </head>
+
 <style>
+    body{
+        text-align: center;
+    }
     button{
         align-content: center;
-        background-color: cornflowerblue;
+        background-color: teal;
         color: white;
         border: none;
-        padding: 5px 10px;
+        font-size: 15px;
+        padding: 15px 20px;
+        margin-left: 30px;
     }
 </style>
+
 <body>
+
 <h1> Exit</h1>
+
 <h3>Do you want to exit the program</h3>
 
 <div>
-    <form>
-        <button type = "submit" class = "button">Exit</button>
-        <button type = "submit" class = "button">Return to Lego Menu</button>
-    </form>
+    <button th:onclick = "|location.href = '@{/GoodBye}'|">Exit</button>
+    <button th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to Lego Menu</button>
 </div>
 
 </body>
+
 </html>
