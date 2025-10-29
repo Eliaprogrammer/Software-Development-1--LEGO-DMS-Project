@@ -1,3 +1,14 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    LEGOMenu.html
+    Purpose: This webpage specifically design for
+    displaying the options the user can take and
+    navigating to the page the user choose
+-->
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
@@ -32,7 +43,7 @@
     <button th:onclick = "|location.href = '@{/AddSetFromFile}' |">1. Add LEGO Set From File</button>
     <button th:onclick = "|location.href = '@{/AddSetManually}' | ">2. Add LEGO Set Manually</button>
     <button th:onclick = "|location.href = '@{/RemoveSet}' | ">3. Remove LEGO Set</button>
-    <button th:onclick = "|location.href = '@{/DisplaySets}' | ">4. Display LEGO Sets</button>
+    <button th:onclick = "|location.href = '@{/DisplaySet}' | ">4. Display LEGO Sets</button>
     <button th:onclick = "|location.href = '@{/UpdateSet}' | ">5. Update LEGO Set</button>
     <button th:onclick = "|location.href = '@{/RetrieveTotalCost}' | ">6. Retrieve Total Cost of LEGO Sets</button>
     <button th:onclick = "|location.href = '@{/Exit}' | ">7. Exit</button>

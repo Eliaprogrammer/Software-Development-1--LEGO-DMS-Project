@@ -1,17 +1,62 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    AddSetFromFile.html
+    Purpose: This webpage is design for
+    the user to upload a file from their
+    computer directory to add/create to a list
+-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>AddSetFromFile</title>
 </head>
+<style>
+    form{
+        margin-left: 30px;
+    }
+</style>
 <body>
 <h2>You are in the process of adding LEGO set(s) from a file to the system!</h2>
+
 <p>Please choose your file location/path:</p>
-<form th:action = "@{/UploadFile}" method = "post">
-    <input type = "file" name = "file">
-    <input type = "submit">
-<!--    <pre id = "fileContent"></pre>-->
-<!--    <output id = "fileContent"></output>-->
-</form>
+
+<div>
+    <form th:action = "@{/AddSetFromFile}"  th:object = "${AddSetFromFile}" method = "post">
+        <label><input type = "file" name = "file" id = "file"></label>
+        <pre id = "fileContent"></pre>
+        <button type = "submit">Return to the LEGO Menu</button>
+    </form>
+</div>
+
+
+<script>
+        const file = document.getElementById("file");
+        const fileContent = document.getElementById("fileContent");
+
+        file.addEventListener("change", function (event) {
+            const chosenFile = event.target.files[0];
+
+            if (chosenFile) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const content = event.target.result;
+                    const lines = content.split(/\r?\n/);
+                    fileContent.textContent = lines.join('\n');
+                    localStorage.setItem("save", content);
+                    alert("File information is saved!")
+                    };
+
+                    reader.readAsText(chosenFile);
+                }
+            }
+        );
+
+</script>
+
 </body>
+
 </html>

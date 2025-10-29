@@ -1,6 +1,14 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    RetrieveTotalCost.html
+    Purpose: This webpage specifically design to
+   get the total cost of all the lego sets in the list
+-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>RetrieveTotalCost</title>
@@ -9,7 +17,12 @@
 <h2>
     You are retrieving the total cost you spend on your LEGO collection
 </h2>
-<p>The total cost you spent on all of your LEGO before tax is: totalCostOfLegos</p>
+<p>
+    The total cost you spent on all of your LEGO before tax is:
+    <em th:number = "${totalCostOfLegos}">0.00</em>
+</p>
+<p>Can you believe you spend: </p>
+<button th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to Lego Menu</button>
 
 </body>
 </html>

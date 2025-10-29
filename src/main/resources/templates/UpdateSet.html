@@ -1,42 +1,153 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    UpdateSet.html
+    Purpose: This webpage allow
+    for promoting and gathering user input to
+    update an already existing lego in a list
+-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>UpdateSet</title>
 </head>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
 
 <body>
 <h2>
     You are in the process of updating a LEGO set
 </h2>
 <div>
-    <form>
+    <form th:action = "@{/UpdateSet}" th:object = "${UpdateSet}" method = "post">
 
         <label>
             Choose what Lego attribute would you like to update?
         </label>
         <br>
-        <input type = "radio" id = "set number" name = "lego_attribute" value ="Set Number">
+        <label><input type = "radio" id = "set number" class = "lego_attribute" value ="Set Number"></label>
         <lable for = "set number">Set Number</lable><br>
 
-        <input type = "radio" id = "lego name" name = "lego_attribute" value ="LEGO Name">
+        <label><input type = "radio" id = "lego name" class = "lego_attribute" value ="LEGO Name"></label>
         <lable for = "lego name">Lego Name</lable><br>
 
-        <input type = "radio" id = "lego theme" name = "lego_attribute" value ="LEGO Theme">
+        <label><input type = "radio" id = "lego theme" class = "lego_attribute" value ="LEGO Theme"></label>
         <lable for = "lego theme">Lego Theme</lable><br>
 
-        <input type = "radio" id = "lego pieces" name = "lego_attribute" value ="Lego Pieces">
+        <label><input type = "radio" id = "lego pieces" class = "lego_attribute" value ="Lego Pieces"></label>
         <lable for = "lego pieces">Lego Pieces</lable><br>
 
-        <input type = "radio" id = "lego release date" name = "lego_attribute"
-               value = "Release Date" placeholder = "lego Release Date">
+        <label><input type = "radio" id = "lego release date" class = "lego_attribute"
+               value = "Release Date" placeholder = "lego Release Date"></label>
         <lable for = "lego release date">Lego Release Date</lable><br>
 
-        <input type = "radio" id = "lego price" name = "lego_attribute" value ="Lego Price">
+        <label><input type = "radio" id = "lego price" class = "lego_attribute" value ="Lego Price"></label>
         <lable for = "lego price">Lego Price</lable><br><br>
 
-        <button class = "bigButton" type = "submit">Submit</button>
+        <button  type = "submit" class = "button">Submit</button>
+
+        <div id = "set_number_form" class = hidden>
+
+            <p>Enter the set number you would like to update:</p>
+            <input type = "number" placeholder = "Current Set Number">
+
+            <p>What value would you like to change it to?</p>
+            <input type = "number" placeholder = "New Set Number">
+
+        </div>
+
+        <div id = "lego_name_form" class = hidden>
+
+            <p>Enter the Lego set name you would like to update:</p>
+            <input type = "text" placeholder = "Current LEGO Name">
+
+            <p>What name would you like to change it to?</p>
+            <input type = "text" placeholder = "New LEGO Name">
+
+        </div>
+
+        <div id = "lego_theme_form" class = hidden>
+
+            <p>Enter the Lego set name associated with the theme you would like to update:</p>
+            <input type = "text" placeholder = "Current Set Name">
+
+            <p>What is the Lego theme you would like to update?</p>
+            <input type = "text" placeholder = "New Set Theme">
+
+        </div>
+
+        <div id = "lego_pieces_form" class = hidden>
+
+            <p>Enter the Lego name associated with the pieces count you like to update:</p>
+            <input type = "text" placeholder = "Current Set Number">
+
+            <p>What is the new pieces count would you like to update?</p>
+            <input type = "number" placeholder = "New Set Pieces">
+
+        </div>
+
+        <div id = "lego_releaseDate_form" class = hidden>
+
+            <p>Enter the Lego name you want to update the release date:</p>
+            <input type = "text" placeholder = "Current Set Name">
+
+            <p>"Enter new release date" +
+                " (MM/DD/YYYY) you would like to update?"</p>
+            <input type = "date" placeholder = "New Set Release Date">
+
+        </div>
+
+        <div id = "lego_price_form" class = hidden>
+
+            <p>Enter the Lego name associated with the price you would like to update:</p>
+            <input type = "text" placeholder = "Current Set Name">
+
+            <p>What is the new price you would like to change it to?</p>
+            <input type = "number" placeholder = "New Set Price">
+
+        </div>
     </form>
 </div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Set Number</th>
+            <th>Name</th>
+            <th>Theme</th>
+            <th>Pieces</th>
+            <th>Release Date</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody id = "legoSetTableBody">
+
+        </tbody>
+
+    </table>
+</div>
+
+<script>
+    window.getElementsByClassName("lego_attribute").addEventListener("click", function() {
+        if(this.checked){
+            document.getElementsByClassName("hidden").classList.remove("hidden");
+        }
+    });
+
+    document.getElementsByClassName("lego_attribute").addEventListener("change", function(){
+        if(this.checked){
+            document.getElementsByClassName("hidden").classList.add("hidden");
+        }
+    });
+
+</script>
+
 </body>
 </html>

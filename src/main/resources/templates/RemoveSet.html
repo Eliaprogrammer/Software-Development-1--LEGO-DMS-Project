@@ -1,5 +1,13 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    RemoveSet.html
+    Purpose: This webpage promoting and gathering
+    user input to remove a specific lego from the list
+-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>RemoveSet</title>
@@ -9,6 +17,13 @@
         margin-right: 15px;
         margin-top: 15px;
     }
+    .error-Message{
+        color: red;
+
+    }
+    message{
+        color:mediumseagreen;
+    }
 </style>
 <body>
 <h2>
@@ -16,18 +31,33 @@
 </h2>
 
 <div>
-    <form>
+    <form th:action = "@{/RemoveSet}" th:object = "${RemoveSet}" method = "post">
+        <div th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></div>
+        <div th:if = "${errorMessage}" th:class = "error-Message">
+            <p th:text = "${errorMessage}"></p>
+        </div>
+        <div th:if = "${message}" th:class = "message">
+            <p th:text = "${message}"></p>
+        </div>
         <label>
-            Please enter the LEGO set name you wish to remove and everything associated with it:
+            Please enter the LEGO set name you wish to remove and everything associated
+            with it:
         </label>
         <br>
-        <input type = "text" id = "setName" name = "setName"
-               placeholder = "Enter the LEGO name" />
+        <label>
+            <input type = "text" th:field = "*{name}"
+                   placeholder = "Enter the LEGO name" />
+        </label>
+
 
         <br>
-        <button type = "submit" class = "button"> Submit</button>
-        <button type = "reset" class = "button"> Clear</button>
+        <button type = "submit"> Submit</button>
+        <button type = "reset" class = "button" id = "resetInput"> Clear</button>
 
+
+        <br>
+        <br>
+        <button th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to the LEGO Menu</button>
     </form>
 </div>
 

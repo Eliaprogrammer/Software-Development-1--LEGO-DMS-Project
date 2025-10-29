@@ -1,5 +1,15 @@
+<!--
+    Elia Schwartz
+    October 29, 2025,
+    CEN 3024C -14877
+    AddSetManually.html
+    Purpose: This webpage specifically for
+    promoting and gathering user input to
+    add/create to a list
+-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>AddSetManually</title>
@@ -8,7 +18,9 @@
     input {
         display: block;
         margin-bottom: 30px;
-
+    }
+    body {
+        margin-left: 30px;
     }
 </style>
 <body>
@@ -16,57 +28,117 @@
     You are in the process of manually entering data information for (a) LEGO set(s)
 </h2>
 <div>
-    <form th:action = "@{/AddSetManuallyl}" th:object = "${AddSetManually}" method = "post">
-        <lable for = "number">
+    <form th:action = "@{/AddSetManually}" th:object = "${AddSetManually}" method = "post">
+        <label for = "numberCount">
             How many LEGO sets you would like to add at a time?
-        </lable>
-        <input type = "number" id = "number" name = "name" placeholder ="Select a number" />
+        </label>
+        <label>
+            <input type = "number" id = "numberCount"
+                       name = "numberCount"
+                       placeholder ="Select a number"/>
+        </label>
 
 
+
+        <div th:if="${#fields.hasErrors('setNumber')}" th:errors="*{setNumber}"></div>
         <label>
             Please enter the nth LEGO set (set number) you are adding to the system:
         </label>
-        <input type = "number" id = "setNumber" placeholder ="Select a number" />
+        <label>
+            <input type = "number" th:field = "*{setNumber}" placeholder ="Select a number" />
+        </label>
 
 
+
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         <label>
             Please enter the name of the LEGO set you would like to add: to the system
         </label>
-        <input type = "text" id = "legoName" placeholder ="Select a number" />
+        <label>
+            <input type = "text" th:field = "*{name}"
+                      placeholder ="Enter the name of the LEGO"/>
+        </label>
 
 
+
+        <div th:if="${#fields.hasErrors('theme')}" th:errors="*{theme}"></div>
         <label>
             Please enter the theme of the LEGO Set:
         </label>
-        <input type = "text" id = "legoTheme" placeholder ="Enter the theme of the LEGO" />
+        <label>
+            <input type = "text" th:field = "*{theme}"
+                      placeholder ="Enter the theme of the LEGO"/>
+        </label>
 
 
+
+        <div th:if="${#fields.hasErrors('pieces')}" th:errors="*{pieces}"></div>
         <label>
             Please enter the number of pieces the LEGO Set
-            Exclude the comma for anything over 999 pieces;
+            Exclude the comma for anything over 999 pieces
         </label>
-        <input type = "text" id = "pieces" placeholder ="Number of LEGO Pieces" />
+        <label>
+            <input type = "text" th:field = "*{pieces}"
+                   placeholder = "Number of LEGO Pieces"/>
+        </label>
+
 
 
         <label>
             Please enter the date the LEGO set was release:
         </label>
-        <input type = "date" id = "releaseDate" placeholder ="MM/DD/YYYY" />
+        <label>
+            <input type = "date" th:field = "*{releaseDate}" placeholder ="MM/DD/YYYY" />
+        </label>
 
 
+
+        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
         <label>
             Please enter the price of the LEGO Set (exclude the $)
         </label>
-        <input type = "number" id = "price" name = "price" step = "any" min = 0 placeholder ="Select a number"/>
+        <label>
+            <input type = "text" th:field = "*{price}" step = "any" min = 0.00
+                      placeholder ="Enter the price of the LEGO"/>
+        </label>
 
 
-        <button type = "submit" id = "submit">Submit</button>
-        <button type = "reset" id = "reset">Clear</button>
 
-        <p>
-            Here are all the LEGO sets that are currently in the list.
-            <span id = "displayArea"></span></p>
+        <button th:type="submit" th:id = "submit" th:class="button" onclick = manuallySetRable>Submit</button>
+        <button th:type = "reset" th:id = "reset" th:class = "button">Clear</button>
+
+<button th:type = "button" th:class = "button" th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to the LEGO Menu</button>
     </form>
+</div>
+
+<p>
+    Here are all the LEGO sets that are currently in the list.
+</p>
+<div>
+    <table id = "manuallySetTable">
+        <tr>
+            <th>Set Number</th>
+            <th>Name</th>
+            <th>Theme</th>
+            <th>Pieces</th>
+            <th>Release Date</th>
+            <th>Price</th>
+        </tr>
+
+        <tr th:each = "legoSet : ${legoSets}">
+            <td th:text = "${legoSet.SetNumber}"></td>
+            <td th:text = "${legoSet.name}"></td>
+            <td th:text = "${legoSet.theme}"></td>
+            <td th:text = "${legoSet.pieces}"></td>
+            <td th:text = "${legoSet.releaseDate}"></td>
+            <td th:text = "${legoSet.price}"></td>
+
+        </tr>
+        <tbody id = "legoSetTableBody">
+
+        </tbody>
+
+    </table>
 </div>
 
 </body>
