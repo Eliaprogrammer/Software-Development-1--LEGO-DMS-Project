@@ -20,10 +20,6 @@
 <p th:id = "seeLego">
 
 </p>
-
-    <button type = "button" th:onclick = " |location.href = '@{/LEGOMenu}'| ">Return to the LEGO Menu</button>
-
-
     <table id = "displaySetTable">
         <tr>
             <th>Set Number</th>
@@ -34,31 +30,19 @@
             <th>Price</th>
         </tr>
 
-        <tr th:each = "legoSet : ${legoSets}">
+        <tbody id = "legoSetTableBody">
+        <tr th:each = "legoSet : ${present}">
             <td th:text = "${legoSet.SetNumber}"></td>
-            <td th:text = "${legoSet.name}"></td>
-            <td th:text = "${legoSet.theme}"></td>
-            <td th:text = "${legoSet.pieces}"></td>
-            <td th:text = "${legoSet.releaseDate}"></td>
-            <td th:text = "${legoSet.price}"></td>
+            <td th:text = "${legoSet.Name}"></td>
+            <td th:text = "${legoSet.Theme}"></td>
+            <td th:text = "${legoSet.Pieces}"></td>
+            <td th:text = "${legoSet.ReleaseDate}"></td>
+            <td th:text = "${legoSet.Price}"></td>
 
         </tr>
-        <tbody id = "legoSetTableBody">
-
         </tbody>
 
     </table>
-
-
-<script>
-   const show = localStorage.getItem("save");
-    const displayLego = JSON.parse(show);
- document.getElementById("seeLego").innerHTML = displayLego;
-
-    if(!displayLego){
-        console.log("Can't display the LEGO sets in the list!");
-    }
-
-  </script>
+    <button type = "button" th:onclick = " |location.href = '@{/LEGOMenu}'| ">Return to the LEGO Menu</button>
 </body>
 </html>

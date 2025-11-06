@@ -18,10 +18,19 @@
     You are retrieving the total cost you spend on your LEGO collection
 </h2>
 <p>
-    The total cost you spent on all of your LEGO before tax is:
-    <em th:number = "${totalCostOfLegos}">0.00</em>
+    The total cost you spent on all of your LEGO before tax is: $
+    <em th:text = "${getTotal}"></em>
 </p>
-<p>Can you believe you spend: </p>
+
+<table th:id = "totalCostTable">
+    <tr>
+        <th>Total Cost</th>
+    </tr>
+    <tr>
+        <td th:text = "${getTotal}"></td>
+    </tr>
+
+</table>
 <button th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to Lego Menu</button>
 
 </body>

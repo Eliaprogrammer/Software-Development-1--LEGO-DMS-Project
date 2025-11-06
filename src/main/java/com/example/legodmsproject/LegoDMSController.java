@@ -1,11 +1,14 @@
 package com.example.legodmsproject;
 
+import com.example.legodmsproject.JDBC.LegoDatabaseConnection;
+import org.springframework.jdbc.core.JdbcTemplate;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +24,11 @@ import java.util.List;
 @Controller
 public class LegoDMSController {
     List<LegoSet> legoSets = new ArrayList<>();
+
+    private final JdbcTemplate jdbcTemplate;
+    public LegoDMSController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /**
      * Method: welcomePage
@@ -99,7 +107,8 @@ public class LegoDMSController {
      * and what happens after
      */
     @PostMapping("/AddSetFromFile")
-    public String addSetFromFileSubmit (LegoSet legoSet, Model model){
+    public String addSetFromFileSubmit (@RequestParam("path") String path, LegoSet legoSet, Model model) throws SQLException {
+        LegoDatabaseConnection.getConnection(path);
         model.addAttribute("AddSetFromFile", legoSet);
         return "LEGOMenu";
     }
@@ -135,6 +144,11 @@ public class LegoDMSController {
         if (bindingResult.hasErrors()) {
             return "AddSetManually";
         }
+        String query = "INSERT INTO LegoSet" +
+                "(SetNumber, Name, Theme, Pieces, ReleaseDate, Price)" +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+        int add = (int)jdbcTemplate.update(query, "SetNumber, Name, Theme, Pieces, ReleaseDate, Price");
+        model.addAttribute("insert", add);
         return "LEGOMenu";
     }
 
@@ -185,6 +199,11 @@ public class LegoDMSController {
         model.addAttribute("message", "You are removing " +
                 legoName + " from the list " +
                         "of LEGO sets" );
+
+        String query = "DELETE FROM LegoSet WHERE Name = ?";
+        int delete = jdbcTemplate.update(query);
+        model.addAttribute("remove", delete);
+        model.addAttribute("message", "You are deleting a lego set from your collection");
         return "LEGOMenu";
     }
 
@@ -196,6 +215,9 @@ public class LegoDMSController {
      */
     @GetMapping("/DisplaySet")
     public String displaySetPage(Model model){
+        String query = "SELECT * FROM LegoSet";
+        List show = jdbcTemplate.queryForList(query);
+        model.addAttribute("present", show);
         model.addAttribute("DisplaySet", new LegoSet());
         return "DisplaySet";
     }
@@ -251,7 +273,10 @@ public class LegoDMSController {
      * the retrieveTotalCost page from the menu
      */
     @GetMapping("/RetrieveTotalCost")
-    public String retrieveTotalCostPage(Model model){
+    public String retrieveTotalCostPage(LegoSet legoSet, Model model){
+        String query = "SELECT SUM(Price) AS TotalCost FROM LegoSet";
+        Double totalCost = (Double) jdbcTemplate.queryForObject(query, Double.class);
+        model.addAttribute("getTotal", totalCost);
         model.addAttribute("RetrieveTotalCost", new LegoSet());
         return "RetrieveTotalCost";
     }
@@ -266,11 +291,6 @@ public class LegoDMSController {
      */
     @PostMapping("/RetrieveTotalCost")
     public String retrieveTotalCostSubmit (LegoSet legoSet, Model model) {
-        double totalCost = 0.00;
-        for(LegoSet lego : legoSets){
-            totalCost += lego.getPrice();
-        }
-        model.addAttribute("totalCostOfLegos", totalCost);
         model.addAttribute("RetrieveTotalCost", legoSet);
         return "LEGOMenu";
     }

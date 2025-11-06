@@ -45,21 +45,31 @@
         </label>
         <br>
         <label>
-            <input type = "text" th:field = "*{name}"
+            <input th:id = "name" th:type = "text" th:field = "*{name}"
                    placeholder = "Enter the LEGO name" />
         </label>
 
 
         <br>
-        <button type = "submit"> Submit</button>
-        <button type = "reset" class = "button" id = "resetInput"> Clear</button>
+        <Input type = "submit" th:value = "Submit" onclick = 'removeLegoByName(userInput); return false'>
+        <input type = "reset" th:value = "Clear">
 
 
-        <br>
-        <br>
+        <br><br>
+
         <button th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to the LEGO Menu</button>
     </form>
 </div>
+
+<script>
+    function removeLegoByName(userInput){
+        documment.getElementById("name").addEventListerner("click", function(){
+            userInput = databaseValue.value;
+
+        });
+    }
+
+</script>
 
 </body>
 </html>

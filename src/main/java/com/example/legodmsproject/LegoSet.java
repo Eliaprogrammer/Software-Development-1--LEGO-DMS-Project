@@ -1,6 +1,5 @@
 package com.example.legodmsproject;
 
-
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  * This class describes a Lego set, showing the attributes associated with each LEGO Set
  */
 public class LegoSet {
-
     @Positive(message = "Number must be positive")
     @Digits(fraction = 0, integer = 1, message = "Must be a whole number")
     private int setNumber;

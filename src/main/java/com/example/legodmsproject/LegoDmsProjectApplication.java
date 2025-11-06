@@ -24,7 +24,7 @@ public class LegoDmsProjectApplication {
        List<LegoSet> legoSets = new ArrayList<>();
        LegoCollection LegoCollection = new LegoCollection(legoSets);
 
-       LegoCollection.displayLegoMenu();
+       //LegoCollection.displayLegoMenu();
 
 
         SpringApplication.run(LegoDmsProjectApplication.class, args);

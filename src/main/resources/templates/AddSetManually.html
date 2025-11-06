@@ -29,14 +29,7 @@
 </h2>
 <div>
     <form th:action = "@{/AddSetManually}" th:object = "${AddSetManually}" method = "post">
-        <label for = "numberCount">
-            How many LEGO sets you would like to add at a time?
-        </label>
-        <label>
-            <input type = "number" id = "numberCount"
-                       name = "numberCount"
-                       placeholder ="Select a number"/>
-        </label>
+
 
 
 
@@ -45,7 +38,7 @@
             Please enter the nth LEGO set (set number) you are adding to the system:
         </label>
         <label>
-            <input type = "number" th:field = "*{setNumber}" placeholder ="Select a number" />
+            <input type = "text" th:field = "*{setNumber}" placeholder ="Select a number"/>
         </label>
 
 
@@ -104,10 +97,9 @@
 
 
 
-        <button th:type="submit" th:id = "submit" th:class="button" onclick = manuallySetRable>Submit</button>
-        <button th:type = "reset" th:id = "reset" th:class = "button">Clear</button>
+        <input th:type="submit" th:value = "Submit" onclick = manuallySetTable>
+        <input th:type = "reset" th:value = "Clear">
 
-<button th:type = "button" th:class = "button" th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to the LEGO Menu</button>
     </form>
 </div>
 
@@ -125,8 +117,9 @@
             <th>Price</th>
         </tr>
 
-        <tr th:each = "legoSet : ${legoSets}">
-            <td th:text = "${legoSet.SetNumber}"></td>
+        <tbody id = "addSetTableBody">
+        <tr th:each = "legoSet : ${insert}">
+            <td th:text = "${legoSet.setNumber}"></td>
             <td th:text = "${legoSet.name}"></td>
             <td th:text = "${legoSet.theme}"></td>
             <td th:text = "${legoSet.pieces}"></td>
@@ -134,12 +127,12 @@
             <td th:text = "${legoSet.price}"></td>
 
         </tr>
-        <tbody id = "legoSetTableBody">
-
         </tbody>
 
     </table>
 </div>
+<button th:type = "button" th:class = "button" th:onclick = " |location.href = '@{/LEGOMenu}'|">Return to the LEGO Menu</button>
 
 </body>
+
 </html>
