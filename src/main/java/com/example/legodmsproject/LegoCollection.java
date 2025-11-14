@@ -1,18 +1,16 @@
 package com.example.legodmsproject;
 
-/**
- * Elia Schwartz
- * October 10, 2025,
- * CEN 3024C 14877 Software Development 1
- * LegoCollection.java
- * This class has the implementation code for each method declaration in the interface
- * that the user will interact with when the program is run,
- */
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Elia Schwartz October 10, 2025, CEN 3024C 14877 Software Development 1
+ * LegoCollection.java
+ * This class has the implementation code for each method declaration
+ * in the {@code Menu} interface that the user will interact
+ * with when the program is run,
+ */
 public class LegoCollection implements Menu{
     LegoSet legoSet = new LegoSet();
 
@@ -20,17 +18,19 @@ public class LegoCollection implements Menu{
 
     boolean isValid = false;
 
+    /**
+     * Construct a {@code LegoCollection} object that
+     * contains an arraylist of {@code LegoSets}
+     * @param legoSets - An ArrayList of {@code LegoSet} objects
+     */
     public LegoCollection(List<LegoSet>  legoSets){
         this.legoSets = legoSets;
     }
 
 
     /**
-     * Method: displayLegoMenu
-     * return: String
-     * Parameter: none
-     * Purpose: The user will be capable of interacting
-     * with the menu options
+     * The user will be capable of interacting with the menu options
+     * @return String - Returns the menu option the user chooses
      */
     @Override
     public String displayLegoMenu() {
@@ -88,12 +88,9 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: addSetFromFile
-     * Parameters: none
-     * return: boolean
-     * Purpose: When called upon the user
-     * can enter the location of a file to add to
-     * the list
+     * When called upon the user can enter the location of
+     * a file to add to the list
+     * @return boolean - sees if file was successful uploaded
      */
     public boolean addSetFromFile() {
         Scanner input = new Scanner(System.in);
@@ -164,12 +161,10 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: addSetManually
-     * param: none
-     * return: boolean
-     * Purpose: When called upon the user
-     * can manually enter information details
-     * about a lego set to add it to the list.
+     * When called upon the user can manually enter information details
+     * about a {@code LegoSet} to add it to the list.
+     * @return boolean - Determine a true or False value to see
+     * if a {@code LegoSet} was added successfully
      */
     public boolean addSetManually() {
         Scanner input = new Scanner(System.in);
@@ -397,11 +392,9 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: removeSet
-     * Parameters: none
-     * @return LegoSet object
-     * Purpose: The user can decide what lego set to remove
-     * from the list
+     * The user can decide what lego set to remove from the list by its name
+     * @return {@code LegoSet} object - The Removal of a {@code LegoSet} from
+     * the collection list
      */
     @Override
     public LegoSet removeSet(){
@@ -442,10 +435,8 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: displaySet
-     * Parameters: none
-     * @return LegoSet object
-     * Purpose: Display all the sets in the list
+     * Display all the sets in the list
+     * @return {@code LegoSet} object - The last LegoSet object
      */
     @Override
     public LegoSet displaySet(){
@@ -458,11 +449,8 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: updateSet
-     * Parameters: none
-     * @return LegoSet object
-     * Purpose: Update a certain lego set by
-     * one of their attribute
+     * Update a certain lego set by one of its attribute
+     * @return {@code LegoSet} object that is being updated in the list
      */
     @Override
     public LegoSet updateSet(){
@@ -764,12 +752,9 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: retrieveTotal
-     * Parameters: none
-     * @return double
-     * Purpose: Collect the price for
-     * each lego set in the list &
-     * get the total cost of all sets
+     * Collect the price for each lego set in the list and
+     * adds them together to get the total cost of all sets
+     * @return double - Represent the total cost in dollars and cents
      */
     @Override
     public double retrieveTotal(){
@@ -781,11 +766,9 @@ public class LegoCollection implements Menu{
     }
 
     /**
-     * Method: exit
-     * Parameters: none
-     * @return boolean
-     * Purpose: Allow the user to
-     * exit the program
+     * Allow the user to exit the program
+     * @return boolean - See a true or false value when the user
+     * decides to exit the program
      */
     public boolean exit(){
         Scanner out = new Scanner(System.in);

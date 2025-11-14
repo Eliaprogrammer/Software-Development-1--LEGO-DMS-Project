@@ -20,6 +20,10 @@ import java.util.List;
  */
 @SpringBootApplication
 public class LegoDmsProjectApplication {
+    /**
+     * The execution of the program
+     * @param args - An array of command-line actions or arguments
+     */
     public static void main(String[] args) {
        List<LegoSet> legoSets = new ArrayList<>();
        LegoCollection LegoCollection = new LegoCollection(legoSets);

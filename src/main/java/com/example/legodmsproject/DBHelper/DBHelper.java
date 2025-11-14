@@ -4,12 +4,22 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Elia Schwartz, November 12, 2025, CEN 3024C - 14877 Software Development
+ * DBHelper.java
+ * This class assist in connecting to a database and executing SQLite query statement
+ */
 public class DBHelper {
 	private final String DATABASE_NAME = "C:\\sqlite\\LegoCollection.db";
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;
 
+    /**
+     * Help create a DBHelper Object to use
+     * and call other methods in the DBHelper class.
+     * It's initializing all the variables to null
+     */
 	public DBHelper() {
 		connection = null;
 		statement = null;
@@ -41,6 +51,7 @@ public class DBHelper {
 		}
 	}
 
+
 	private Object[][] arrayListTo2DArray(ArrayList<ArrayList<Object>> list) {
 		Object[][] array = new Object[list.size()][];
 		for (int i = 0; i < list.size(); i++) {
@@ -50,6 +61,11 @@ public class DBHelper {
 		return array;
 	}
 
+    /**
+     * Execute a SQL statement after establishing a connect
+     * to the database
+     * @param sql - The specific SQL Command to execute
+     */
 	protected void execute(String sql) {
 		try {
 			connect();
@@ -62,6 +78,13 @@ public class DBHelper {
 		}
 	}
 
+    /**
+     * Execute a SQL statement and placing the results in a
+     * {@code DefaultTableModel}
+     * @param sql - SQL command to execute
+     * @return a {@code DefaultTableModel} object with the results
+     * of the SQL query statement
+     */
 	protected DefaultTableModel executeQueryToTable(String sql) {
 		ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> columns = new ArrayList<Object>();
@@ -84,6 +107,12 @@ public class DBHelper {
 		return new DefaultTableModel(arrayListTo2DArray(result), columns.toArray());
 	}
 
+    /**
+     * Execute a SQL query statement and adding the results
+     * of an arraylist of objects into an arraylist
+     * @param sql - SQL command to execute
+     * @return The results of the SQL statement
+     */
 	protected ArrayList<ArrayList<Object>> executeQuery(String sql) {
 		ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
 		connect();

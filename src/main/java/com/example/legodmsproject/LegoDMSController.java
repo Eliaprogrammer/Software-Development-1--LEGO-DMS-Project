@@ -26,30 +26,31 @@ public class LegoDMSController {
     List<LegoSet> legoSets = new ArrayList<>();
 
     private final JdbcTemplate jdbcTemplate;
+
+    /**
+     * Constructs a new LegoDMSController to allow database usage
+     * and query execution in the program with JDBC Template
+     * @param jdbcTemplate - Assist in properly executing query statements
+     */
     public LegoDMSController(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
-     * Method: welcomePage
-     * param model
-     * return: String
-     * Purpose: The first page that the user
-     * see after entering the url
+     * The first page that the user see after entering the website url
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the Welcome.HTML page
      */
     @GetMapping("/Welcome")
     public String welcomePage(Model model){
         model.addAttribute("Welcome", new LegoSet());
             return "Welcome";
     }
-
     /**
-     * Method: welcomeSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: Allow the user to switch
-     * to a different page
+     * Allow the user to switch to a different page
+     * @param legoSet - Represent a LEGO object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Let the program know what webpage to display next (LEGOMenu)
      */
     @PostMapping("/Welcome")
     public String welcomeSubmit(LegoSet legoSet, Model model){
@@ -58,67 +59,56 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: legoPage
-     * param model
-     * return: String
-     * Purpose: the transition from the welcome page to
-     * the lego menu
+     * The transition from the welcome page to the lego menu
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the LEGOMenu.HTML webpage
      */
     @GetMapping("/LEGOMenu")
     public String legoPage(Model model){
         model.addAttribute("LEGOMenu", new LegoSet());
         return "LEGOMenu";
     }
-
     /**
-     * Method: legoSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: The action that happens after
-     * getting onto the Lego Menu page
+     * The action that happens after getting onto the Lego Menu page
+     * @param legoSet - Passes in an object of a LEGO
+     * @param model -Assist in the displaying data to the viewer
+     * @return String - The name of one of the options in the LEGOMenu
      */
     @PostMapping("/LEGOMenu")
     public String legoSubmit (LegoSet legoSet, Model model){
         model.addAttribute("LEGOMenu", legoSet);
-        return "AddSetFromFile";
+        return "AddSetFromDatabase";
     }
 
 
     /**
-     * Method: addSetFromFilePage
-     * param model
-     * return: String
-     * Purpose:To navigate from the LEGO Menu to the add set
-     * from file page
+     * To navigate from the LEGO Menu to the add set from database page
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the AddSetFromDatabase.HTML webpage
      */
-    @GetMapping("/AddSetFromFile")
-    public String addSetFromFilePage(Model model){
-        model.addAttribute("AddSetFromFile", new LegoSet());
-        return "AddSetFromFile";
+    @GetMapping("/AddSetFromDatabase")
+    public String addSetFromDatabasePage(Model model){
+        model.addAttribute("AddSetFromDatabase", new LegoSet());
+        return "AddSetFromDatabase";
     }
-
     /**
-     * Method: addSetFromFileSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: the action of adding sets from a file
-     * and what happens after
+     * The action of adding sets from a database and what happens after
+     * @param legoSet - LEGO Set Object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigate back to the LEGOMenu
      */
-    @PostMapping("/AddSetFromFile")
-    public String addSetFromFileSubmit (@RequestParam("path") String path, LegoSet legoSet, Model model) throws SQLException {
+    @PostMapping("/AddSetFromDatabase")
+    public String addSetFromDatabaseSubmit (@RequestParam("path") String path, LegoSet legoSet, Model model) throws SQLException {
         LegoDatabaseConnection.getConnection(path);
-        model.addAttribute("AddSetFromFile", legoSet);
+        model.addAttribute("AddSetFromDatabase", legoSet);
         return "LEGOMenu";
     }
 
     /**
-     * Method: addSetManuallyPage
-     * param model
-     * return: String
-     * Purpose:To navigate from the LEGO Menu to the add set
-     * manually page
+     * To navigate from the LEGO Menu to the add set manually page
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Displays the addSetManuallyPage to gather
+     * user's lego set details
      */
     @GetMapping("/AddSetManually")
     public String addSetManuallyPage(Model model){
@@ -126,12 +116,12 @@ public class LegoDMSController {
         return "AddSetManually";
     }
     /**
-     * Method: addSetManuallySubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: Allow the user to add a lego set information
-     * to the collection and validating the user input
+     * Allow the user to add a lego set information to the collection
+     * and validating the user input
+     * @param legoSet - Represent a LEGO object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigate to the LEGoMenu once finished with the
+     * current webpage
      */
     @PostMapping("/AddSetManually")
     public String addSetManuallySubmit (
@@ -144,35 +134,30 @@ public class LegoDMSController {
         if (bindingResult.hasErrors()) {
             return "AddSetManually";
         }
-        String query = "INSERT INTO LegoSet" +
-                "(SetNumber, Name, Theme, Pieces, ReleaseDate, Price)" +
-                "VALUES(?, ?, ?, ?, ?, ?)";
-        int add = (int)jdbcTemplate.update(query, "SetNumber, Name, Theme, Pieces, ReleaseDate, Price");
+        String query = "INSERT INTO LegoSet VALUES(?, ?, ?, ?, ?, ?)";
+        int add = jdbcTemplate.update(query, "SetNumber, Name, Theme, Pieces, ReleaseDate, Price");
         model.addAttribute("insert", add);
         return "LEGOMenu";
     }
 
     /**
-     * Method: removeSetPage
-     * param model
-     * return: String
-     * Purpose: Searching for the removeSetPage
-     * to obtain the information to start
+     * Searching for the removeSetPage to obtain the information to start
      * removing a lego set
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Displays the RemoveSet.HTML webpage where the
+     * user can complete te action
      */
-
     @GetMapping("/RemoveSet")
     public String removeSetPage(Model model){
         model.addAttribute("RemoveSet", new LegoSet());
         return "RemoveSet";
     }
     /**
-     * Method: removeSetSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: The action of removing a
-     * lego set after getting onto the page
+     * The action of removing a lego set after getting onto the page
+     * @param legoSet - Represents a Lego Set Object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigating to the LEGOMenu.HTML webpage after the
+     * removal of a LEGO set
      */
     @PostMapping("/RemoveSet")
     public String removeSetSubmit (@ModelAttribute("RemoveSet") LegoSet legoSet,
@@ -208,10 +193,9 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: displaySetPage
-     * param model
-     * return: String
-     * Purpose: Navigate to the display page
+     * Displays the webpage to visually show what LEGO the user has
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigate to the display page
      */
     @GetMapping("/DisplaySet")
     public String displaySetPage(Model model){
@@ -222,12 +206,11 @@ public class LegoDMSController {
         return "DisplaySet";
     }
     /**
-     * Method: displaySetSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: Allow the user to see
-     * the entire list of LEGO in their collection
+     * Allow the user to see the entire list of LEGO in their collection
+     * @param legoSet - Represents a Lego Set Object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - The transition to the LEGOMenu.HTML webpage
+     * from the current page
      */
     @PostMapping("/DisplaySet")
     public String displaySetSubmit (LegoSet legoSet, Model model) {
@@ -239,12 +222,10 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: updatedSetPage
-     * param model
-     * return: String
-     * Purpose: Allow the user to get onto
-     * the page where they can alter a
+     * Allow the user to get onto the page where they can alter a
      * lego attribute
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the UpdateSet.HTML webpage to the user
      */
     @GetMapping("/UpdateSet")
     public String updateSetPage(Model model){
@@ -252,12 +233,11 @@ public class LegoDMSController {
         return "UpdateSet";
     }
     /**
-     * Method: updateSetSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: Allow the user the action
-     * to update a set attribute
+     * Demonstrate what happens after an action to update a set attribute
+     * @param legoSet - {@code LegoSet} Object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigate to the LEGOMenu.HTML page from the
+     * UpdateSet.HTML webpage after the user changes an attribute
      */
     @PostMapping("/UpdateSet")
     public String updateSetSubmit (LegoSet legoSet, Model model) {
@@ -266,28 +246,24 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: retrieveTotalCostPage
-     * param model
-     * return: String
-     * Allow the user to navigate to
-     * the retrieveTotalCost page from the menu
+     * Allow the user to navigate to the retrieveTotalCost page from the menu
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the RetrieveTotalCost.HTML webpage to the user
      */
     @GetMapping("/RetrieveTotalCost")
     public String retrieveTotalCostPage(LegoSet legoSet, Model model){
         String query = "SELECT SUM(Price) AS TotalCost FROM LegoSet";
-        Double totalCost = (Double) jdbcTemplate.queryForObject(query, Double.class);
+        Double totalCost = jdbcTemplate.queryForObject(query, Double.class);
         model.addAttribute("getTotal", totalCost);
         model.addAttribute("RetrieveTotalCost", new LegoSet());
         return "RetrieveTotalCost";
     }
-
     /**
-     * Method: retrieveTotalCostSubmit
-     * param legoSet
-     * param model
-     * return: String
-     * Purpose: The user can see the output of
-     * the total cost they spent on their collection
+     * The user can see the output of the total cost they spent on their collection
+     * @param legoSet - {@code LegoSet} object
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Navigate to the LEGOMenu.HTML webpage
+     * after getting the total
      */
     @PostMapping("/RetrieveTotalCost")
     public String retrieveTotalCostSubmit (LegoSet legoSet, Model model) {
@@ -296,11 +272,9 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: ExitPage
-     * param model
-     * return: String
-     * Purpose: Allow the user to navigate to
-     * the exit page from the menu
+     * Allow the user to navigate to the exit page from the menu
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Display the Exit.HTML webpage, what the users interact with
      */
     @GetMapping("/Exit")
     public String ExitPage(Model model){
@@ -309,14 +283,13 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: exitSubmit
-     * param action
-     * return: Sting
-     * Purpose: Redirect the user
-     * based on the button press
+     * Redirect the user based on the button press "Exit" or "Return to LEGOMenu"
+     * @param action - The value of the users choice
+     * @return Sting - Navigate to either the LEGOMenu.HTML or GoodBye.HTML webpage
+     *
      */
     @PostMapping("/Exit")
-    public String exitSubmit (@RequestParam(value = "action", required = false) String action) {
+    public String exitSubmit (@RequestParam(value = "button1", required = false) String action) {
         if("button1".equals(action)){
             return "GoodBye";
         }
@@ -324,23 +297,18 @@ public class LegoDMSController {
     }
 
     /**
-     * Method: goodbyePage
-     * param model
-     * return: String
-     * Purpose: Allow the user to see the signing off
-     * page
+     * Allow the user to see the signing off page
+     * @param model - Assist in the displaying data to the viewer
+     * @return String - Shows the GoodBye.HTML to the user
      */
     @GetMapping("/GoodBye")
     public String goodbyePage(Model model){
         model.addAttribute("GoodBye", new LegoSet());
         return "GoodBye";
     }
-
     /**
-     * Method: goodbyeSubmit
-     * return: String
-     * Purpose: Manage what happens after the
-     * use gets to the goodbye Page
+     * The user will stay on the goodbye Page and safety close the web browser window
+     * @return String - GoodBye webpage
      */
     @PostMapping("/GoodBye")
     public String goodbyeSubmit(){
