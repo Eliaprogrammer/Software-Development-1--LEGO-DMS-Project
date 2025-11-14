@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.example.legodmsproject"},{"l":"com.example.legodmsproject.DBHelper"},{"l":"com.example.legodmsproject.JDBC"}];updateSearchResults();
